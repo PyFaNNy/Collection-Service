@@ -1,0 +1,31 @@
+﻿
+@model Course_project.ViewModels.LoginViewModel
+    <h3>Login with external provider</h3>
+    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
+        @foreach (var provider in Model.ExternalProviders)
+        {
+        <button type="submit" name="provider" class="btn btn-primary mt-1" value="@provider.Name">@provider.DisplayName</button>
+        }
+    </form>
+    <h2>Login to the application</h2>
+    <form method="post" asp-controller="Account" asp-action="Login"
+          asp-route-returnUrl="@Model.ReturnUrl">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div>
+            <label asp-for="Name"></label><br />
+            <input asp-for="Name" />
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div>
+            <label asp-for="Password"></label><br />
+            <input asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div>
+            <label asp-for="RememberMe"></label><br />
+            <input asp-for="RememberMe" />
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary mt-1">Log in</button>
+        </div>
+    </form>

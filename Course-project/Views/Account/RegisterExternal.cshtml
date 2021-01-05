@@ -1,0 +1,14 @@
+﻿@model Course_project.ViewModels.ExternalLoginViewModel
+<h2>Login to the application</h2>
+<form method="post" asp-controller="Account" asp-action="RegisterExternalConfirmed"
+      asp-route-returnUrl="@Model.ReturnUrl">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        <label asp-for="Name"></label><br />
+        <input asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary mt-1">Save</button>
+    </div>
+</form>
