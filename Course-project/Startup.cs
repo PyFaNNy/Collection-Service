@@ -2,6 +2,7 @@ using Course_project.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,7 +41,7 @@ namespace Course_project
                     options.AppSecret = Configuration["Authentication:Facebook:AppSecret"]; ;
                 });
 
-            services.AddIdentity<User, Role>(options =>
+            services.AddIdentity<User,Role>(options =>
             {
                 options.Password.RequiredLength = 1;
                 options.Password.RequireNonAlphanumeric = false;

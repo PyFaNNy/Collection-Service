@@ -4,30 +4,33 @@
 }
 
 <form id='form1' method="post">
-    <button type="submit"  class="btn btn-primary" asp-controller="Users" asp-action="Delete">Delete</button>
-    <button type="submit"  class="btn btn-primary" asp-controller="Users" asp-action="Block">Block</button>
-    <button type="submit"  class="btn btn-primary" asp-controller="Users" asp-action="UnBlock">UnBlock</button>
+    <button type="submit" class="btn btn-primary" asp-controller="Users" asp-action="Delete">Delete</button>
+    <button type="submit" class="btn btn-primary" asp-controller="Users" asp-action="Block">Block</button>
+    <button type="submit" class="btn btn-primary" asp-controller="Users" asp-action="UnBlock">UnBlock</button>
 
     <table class="table table-bordered table-checks">
         <tr>
             <th>Email</th>
             <th>Name</th>
-            <th>Role</th>
+            <th>Roles</th>
             <th>Status</th>
             <th><input type="checkbox" name="cb_all"></th>
         </tr>
         @foreach (var user in Model)
         {
-    <tr>
-        <td>@user.Email</td>
-        <td>@user.UserName</td>
-        <th>Role</th>
-        <td>@user.Status</td>
-        <td><input type="checkbox" class="qwe" name="selectedUsers" value="@user.UserName" /></td>
-    </tr>
+            <tr>
+                <td>@user.Email</td>
+                <td>@user.UserName</td>
+                <td><a class="btn btn-sm btn-primary" asp-controller="Roles"  asp-action="Edit" asp-route-userid="@user.Id">Roles</a></td>
+                <td>@user.Status</td>
+                <td><input type="checkbox" class="qwe" name="selectedUsers" value="@user.UserName" /></td>
+            </tr>
         }
     </table>
 </form>
+<a class="btn btn-sm btn-primary" asp-controller="Roles" asp-action="Create">Add Role</a>
+<a class="btn btn-sm btn-primary" asp-controller="Roles" asp-action="Index">Roles List</a>
+
 <script>
     var f = document.getElementById('form1');
     f.cb_all.onchange = function (e) {

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Course_project.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class UsersController : Controller
     {
         UserManager<User> _userManager;
