@@ -31,7 +31,7 @@ namespace Course_project.Controllers
                 
                 // добавляем пользователя
                 var result = await _userManager.CreateAsync(user, model.Password);
-                await _userManager.AddToRoleAsync(user, "user");
+                //await _userManager.AddToRoleAsync(user, "user");
                 if (result.Succeeded)
                 {
                     // установка куки

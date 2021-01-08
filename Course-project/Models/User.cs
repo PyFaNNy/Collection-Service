@@ -7,6 +7,6 @@ namespace Course_project.Models
     public class User :IdentityUser<Guid>
     {
         public string Status { get; set; }
-        public List<Collection> Collections { get; set; }
+        public virtual List<Collection> Collections { get; set; }
     }
 }
