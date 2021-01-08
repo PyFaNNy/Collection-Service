@@ -1,14 +1,15 @@
 ﻿using Course_project.Models;
 using Course_project.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Course_project.Controllers
 {
+    //[Authorize(Roles = "admin")]
     public class RolesController : Controller
     {
         RoleManager<Role> _roleManager;

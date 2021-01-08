@@ -1,14 +1,13 @@
-﻿@model IEnumerable<Course_project.Models.User>
-@{
+﻿@{
     ViewBag.Title = "List of Users";
 }
-
+<h2>List of Users</h2>
 <form id='form1' method="post">
-    <button type="submit" class="btn btn-primary" asp-controller="Users" asp-action="Delete">Delete</button>
-    <button type="submit" class="btn btn-primary" asp-controller="Users" asp-action="Block">Block</button>
-    <button type="submit" class="btn btn-primary" asp-controller="Users" asp-action="UnBlock">UnBlock</button>
+    <button type="submit" class="btn btn-primary m-1" asp-controller="Admin" asp-action="Delete">Delete</button>
+    <button type="submit" class="btn btn-primary m-1" asp-controller="Admin" asp-action="Block">Block</button>
+    <button type="submit" class="btn btn-primary m-1" asp-controller="Admin" asp-action="UnBlock">UnBlock</button>
 
-    <table class="table table-bordered table-checks">
+    <table class="table table-striped table-hover">
         <tr>
             <th>Email</th>
             <th>Name</th>
@@ -20,8 +19,8 @@
         {
             <tr>
                 <td>@user.Email</td>
-                <td>@user.UserName</td>
-                <td><a class="btn btn-sm btn-primary" asp-controller="Roles"  asp-action="Edit" asp-route-userid="@user.Id">Roles</a></td>
+                <td><a asp-controller="Profile" asp-action="Index" asp-route-userid="@user.Id">@user.UserName</a></td>
+                <td><a class="btn btn-sm btn-primary text-center" asp-controller="Roles"  asp-action="Edit" asp-route-userid="@user.Id">Roles</a></td>
                 <td>@user.Status</td>
                 <td><input type="checkbox" class="qwe" name="selectedUsers" value="@user.UserName" /></td>
             </tr>

@@ -1,19 +1,18 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using Course_project.Models;
-using Course_project.ViewModels;
+﻿using Course_project.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Course_project.Controllers
 {
-    [Authorize(Roles = "admin")]
-    public class UsersController : Controller
+    //[Authorize(Roles = "admin")]
+    public class AdminController : Controller
     {
         UserManager<User> _userManager;
         SignInManager<User> _signInManager;
-        public UsersController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AdminController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

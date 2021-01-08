@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Course_project.Models;
+using Course_project.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Course_project.Models;
-using Course_project.ViewModels;
-using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace Course_project.Controllers
 {
@@ -32,9 +27,11 @@ namespace Course_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User {Email = model.Email, UserName = model.Name, Status="active" };
+                User user = new User {Email = model.Email, UserName = model.Name, Status="active", Collections = null};
+                
                 // добавляем пользователя
                 var result = await _userManager.CreateAsync(user, model.Password);
+                await _userManager.AddToRoleAsync(user, "user");
                 if (result.Succeeded)
                 {
                     // установка куки
