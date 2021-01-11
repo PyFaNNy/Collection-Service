@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Course_project.Controllers
 {
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         UserManager<User> _userManager;

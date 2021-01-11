@@ -27,7 +27,7 @@ namespace Course_project
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<UserContext>(options =>
+            services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddAuthentication()
@@ -41,7 +41,7 @@ namespace Course_project
                     options.AppSecret = Configuration["Authentication:Facebook:AppSecret"]; ;
                 });
 
-            services.AddIdentity<User,Role>(options =>
+            services.AddIdentity<User,IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 1;
                 options.Password.RequireNonAlphanumeric = false;
@@ -49,10 +49,9 @@ namespace Course_project
                 options.Password.RequireUppercase = false;
                 options.Password.RequireDigit = false;
             })
-               .AddEntityFrameworkStores<UserContext>();
+               .AddEntityFrameworkStores<ApplicationContext>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -62,7 +61,6 @@ namespace Course_project
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
@@ -70,7 +68,7 @@ namespace Course_project
 
             app.UseRouting();
 
-            app.UseAuthentication();    // подключение аутентификации
+            app.UseAuthentication();    
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -8,7 +8,7 @@ namespace Course_project.Models
         public string Summary { get; set; }
         public string Theme { get; set; }
         public string UrlImg { get; set; }
-        public User Owner { get; set; }
+        public string Owner { get; set; }
         public List<Collection> Items { get; set; }
     }
 }

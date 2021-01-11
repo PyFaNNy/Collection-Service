@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Course_project.Controllers
 {
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     public class RolesController : Controller
     {
-        RoleManager<Role> _roleManager;
+        RoleManager<IdentityRole> _roleManager;
         UserManager<User> _userManager;
-        public RolesController(RoleManager<Role> roleManager, UserManager<User> userManager)
+        public RolesController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -30,7 +30,7 @@ namespace Course_project.Controllers
         {
             if (!string.IsNullOrEmpty(name))
             {
-                IdentityResult result = await _roleManager.CreateAsync(new Role(name));
+                IdentityResult result = await _roleManager.CreateAsync(new IdentityRole(name));
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index");
@@ -49,7 +49,7 @@ namespace Course_project.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
-            Role role = await _roleManager.FindByIdAsync(id);
+            IdentityRole role = await _roleManager.FindByIdAsync(id);
             if (role != null)
             {
                 IdentityResult result = await _roleManager.DeleteAsync(role);
@@ -61,11 +61,9 @@ namespace Course_project.Controllers
 
         public async Task<IActionResult> Edit(string userId)
         {
-            // получаем пользователя
             User user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
-                // получем список ролей пользователя
                 var userRoles = await _userManager.GetRolesAsync(user);
                 var allRoles = _roleManager.Roles.ToList();
                 ChangeRoleViewModel model = new ChangeRoleViewModel
@@ -83,24 +81,19 @@ namespace Course_project.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(string userId, List<string> roles)
         {
-            // получаем пользователя
             User user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
-                // получем список ролей пользователя
                 var userRoles = await _userManager.GetRolesAsync(user);
-                // получаем все роли
                 var allRoles = _roleManager.Roles.ToList();
-                // получаем список ролей, которые были добавлены
                 var addedRoles = roles.Except(userRoles);
-                // получаем роли, которые были удалены
                 var removedRoles = userRoles.Except(roles);
 
                 await _userManager.AddToRolesAsync(user, addedRoles);
 
                 await _userManager.RemoveFromRolesAsync(user, removedRoles);
 
-                return RedirectToAction("Index", "Users");
+                return RedirectToAction("Index", "Admin");
             }
 
             return NotFound();

@@ -3,6 +3,7 @@ using Course_project.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -27,14 +28,11 @@ namespace Course_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User {Email = model.Email, UserName = model.Name, Status="active", Collections = null};
-                
-                // добавляем пользователя
+                User user = new User {Email = model.Email, UserName = model.Name, Status="active"};
                 var result = await _userManager.CreateAsync(user, model.Password);
-                //await _userManager.AddToRoleAsync(user, "user");
+                await _userManager.AddToRoleAsync(user, "user");
                 if (result.Succeeded)
                 {
-                    // установка куки
                     await _signInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }
@@ -78,7 +76,6 @@ namespace Course_project.Controllers
                                 await _signInManager.PasswordSignInAsync(model.Name, model.Password, model.RememberMe, false);
                         if (result.Succeeded)
                         {
-                            // проверяем, принадлежит ли URL приложению
                             if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
                             {
                                 return Redirect(model.ReturnUrl);
@@ -143,13 +140,15 @@ namespace Course_project.Controllers
                 return RedirectToAction("Login");
             }
 
-            User user = new User 
+            User user = new User
             {
-                Email=info.Principal.FindFirstValue(ClaimTypes.Email),
+                Email = info.Principal.FindFirstValue(ClaimTypes.Email),
                 UserName = model.Name,
-                Status = "active" 
+                Status = "active",
+                Collections=null
             };
             var result = await _userManager.CreateAsync(user);
+            await _userManager.AddToRoleAsync(user, "user");
             if (result.Succeeded)
             {
                 var identityReult = await _userManager.AddLoginAsync(user, info);

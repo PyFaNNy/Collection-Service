@@ -1,5 +1,40 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿<h2>User : @Model.Owner</h2>
+<h4>Name of Collection: @Model.Name </h4>
+<form id='form1' method="post">
+    <button type="submit" class="btn btn-primary m-1" asp-controller="Collections" asp-action="Delete">Add Item</button>
+    <button type="submit" class="btn btn-primary m-1" asp-controller="Collections" asp-action="Block">Delete Item</button>
+
+    <table class="table table-striped table-hover">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Tags</th>
+            <th><input type="checkbox" name="cb_all"></th>
+        </tr>
+        @foreach (var collection in Model.Collections)
+        {
+            <tr>
+                <td><a asp-controller="Collections" asp-action="Index" asp-route-userid="@Model.Id">@collection.Name</a>@collection.Name</td>
+                <td>@collection.Theme</td>
+                <td>@collection.Items.Count</td>
+                <td>@collection.Summary</td>
+                <td><input type="checkbox" class="qwe" name="selectedUsers" value="" /></td>
+            </tr>
+        }
+    </table>
+</form>
+
+<script>
+    var f = document.getElementById('form1');
+    f.cb_all.onchange = function (e) {
+        var el = e.target || e.srcElement;
+        var qwe = el.form.getElementsByClassName('qwe');
+        for (var i = 0; i < qwe.length; i++) {
+            if (el.checked) {
+                qwe[i].checked = true;
+            } else {
+                qwe[i].checked = false;
+            }
+        }
+    }
+</script>
