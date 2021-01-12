@@ -47,18 +47,7 @@ namespace Course_project
                  options.Password.RequireDigit = false;
              })
                .AddEntityFrameworkStores<ApplicationContext>();
-            services.Configure<RequestLocalizationOptions>(options =>
-            {
-                var supportedCultures = new[]
-                 {
-                    new CultureInfo("en"),
-                    new CultureInfo("ru"),
-
-                 };
-                options.DefaultRequestCulture = new RequestCulture("en");
-                options.SupportedCultures = supportedCultures;
-                options.SupportedUICultures = supportedCultures;
-            });
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -75,10 +64,19 @@ namespace Course_project
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
+            var supportedCultures = new[]
+{
+                new CultureInfo("en"),
+                new CultureInfo("ru"),
+            };
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
 
-            var localizationOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>().Value;
-            app.UseRequestLocalization(localizationOptions);
+            app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
