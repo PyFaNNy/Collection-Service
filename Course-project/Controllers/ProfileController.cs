@@ -17,7 +17,7 @@ namespace Course_project.Controllers
         }
 
         // GET: ProfileController
-        public async Task<ActionResult> IndexAsync(string userId)
+        public async Task<ActionResult> Index(string userId)
         {
             User user =await _userManager.FindByIdAsync(userId);
             return View(user);

@@ -1,6 +1,6 @@
 ﻿<h2>User : @Model.UserName</h2>
 <h4>Collections</h4>
-<form id='form1'>
+<form id='collections'>
         <a class="btn btn-primary m-1" asp-controller="Collections" asp-action="Create" asp-route-userid="@Model.Id">Create Collection</a>
         <a class="btn btn-primary m-1" asp-controller="Collections" asp-action="Delete" >Delete Collection</a>
 
@@ -20,17 +20,17 @@
                         <td>@collection.Theme</td>
                         <td>@collection.Items.Count</td>
                         <td>@collection.Summary</td>
-                        <td><input type="checkbox" class="qwe" name="selectedUsers" value="" /></td>
+                        <td><input type="checkbox" class="collection" name="selectedCollection" value="" /></td>
                     </tr>
                 }
         </table>
 </form>
 
 <script>
-    var f = document.getElementById('form1');
+    var f = document.getElementById('collections');
     f.cb_all.onchange = function (e) {
         var el = e.target || e.srcElement;
-        var qwe = el.form.getElementsByClassName('qwe');
+        var qwe = el.form.getElementsByClassName('collection');
         for (var i = 0; i < qwe.length; i++) {
             if (el.checked) {
                 qwe[i].checked = true;

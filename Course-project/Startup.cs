@@ -1,16 +1,14 @@
 using Course_project.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 namespace Course_project
 {
@@ -23,7 +21,6 @@ namespace Course_project
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
@@ -41,15 +38,27 @@ namespace Course_project
                     options.AppSecret = Configuration["Authentication:Facebook:AppSecret"]; ;
                 });
 
-            services.AddIdentity<User,IdentityRole>(options =>
-            {
-                options.Password.RequiredLength = 1;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireDigit = false;
-            })
+            services.AddIdentity<User, IdentityRole>(options =>
+             {
+                 options.Password.RequiredLength = 1;
+                 options.Password.RequireNonAlphanumeric = false;
+                 options.Password.RequireLowercase = false;
+                 options.Password.RequireUppercase = false;
+                 options.Password.RequireDigit = false;
+             })
                .AddEntityFrameworkStores<ApplicationContext>();
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                 {
+                    new CultureInfo("en"),
+                    new CultureInfo("ru"),
+
+                 };
+                options.DefaultRequestCulture = new RequestCulture("en");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -68,7 +77,10 @@ namespace Course_project
 
             app.UseRouting();
 
-            app.UseAuthentication();    
+            var localizationOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>().Value;
+            app.UseRequestLocalization(localizationOptions);
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

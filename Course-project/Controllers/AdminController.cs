@@ -28,9 +28,9 @@ namespace Course_project.Controllers
                 {
                     return NotFound();
                 }
-                user.Status = "block";
+                user.Status = "blocked";
                 await _userManager.UpdateAsync(user);
-                if (user.Status.Equals("block") && User.Identity.Name.Equals(user.UserName))
+                if (user.Status.Equals("blocked") && User.Identity.Name.Equals(user.UserName))
                 {
                     await _signInManager.SignOutAsync();
                 }
@@ -69,7 +69,7 @@ namespace Course_project.Controllers
                     IdentityResult result = await _userManager.DeleteAsync(user);
                 }
             }
-            if (_userManager.FindByNameAsync(User.Identity.Name).Status.Equals("block"))
+            if (_userManager.FindByNameAsync(User.Identity.Name).Status.Equals("blocked"))
             {
                 return Redirect("~/Account/Logout");
             }
