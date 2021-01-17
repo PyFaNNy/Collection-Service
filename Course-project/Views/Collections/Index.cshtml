@@ -1,5 +1,6 @@
-﻿@*!!!!!!!!!!!!!!!!!!!TODO Views!!!!!!!!!!!!!!*@
-<h2>User : @Model.Owner</h2>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+<h2>User: @Model.Owner</h2>
 <h4>Name of Collection: @Model.Name </h4>
 <form id='items' method="post">
     <button type="submit" class="btn btn-primary m-1" asp-controller="Collections" asp-action="Delete">Add Item</button>

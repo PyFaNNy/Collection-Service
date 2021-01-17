@@ -61,9 +61,10 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - Course_project
-        </div>
+        <div class="container body-content">
+            <div>
+                @await Html.PartialAsync("_SelectLanguagePartial")
+            </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

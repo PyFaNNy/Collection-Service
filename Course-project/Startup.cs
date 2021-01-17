@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace Course_project
 {
@@ -23,7 +24,7 @@ namespace Course_project
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -37,7 +38,7 @@ namespace Course_project
                     options.AppId = Configuration["Authentication:Facebook:AppId"];
                     options.AppSecret = Configuration["Authentication:Facebook:AppSecret"]; ;
                 });
-
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddIdentity<User, IdentityRole>(options =>
              {
                  options.Password.RequiredLength = 1;
@@ -47,7 +48,24 @@ namespace Course_project
                  options.Password.RequireDigit = false;
              })
                .AddEntityFrameworkStores<ApplicationContext>();
-            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            
+            services.AddMvc()
+                .AddDataAnnotationsLocalization()
+                .AddViewLocalization();
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                {
+                    new CultureInfo("en"),
+                    new CultureInfo("ru")
+                };
+
+                options.DefaultRequestCulture = new RequestCulture("en");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -62,20 +80,8 @@ namespace Course_project
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseRequestLocalization();
             app.UseStaticFiles();
-
-            var supportedCultures = new[]
-{
-                new CultureInfo("en"),
-                new CultureInfo("ru"),
-            };
-            app.UseRequestLocalization(new RequestLocalizationOptions
-            {
-                DefaultRequestCulture = new RequestCulture("en"),
-                SupportedCultures = supportedCultures,
-                SupportedUICultures = supportedCultures
-            });
-
             app.UseRouting();
 
             app.UseAuthentication();

@@ -135,9 +135,6 @@
   <data name="NameCollection" xml:space="preserve">
     <value>Name of Collection: </value>
   </data>
-  <data name="NewCollectionCreating" xml:space="preserve">
-    <value>New Collection Creating</value>
-  </data>
   <data name="NumberItems" xml:space="preserve">
     <value>Number of Items</value>
   </data>
