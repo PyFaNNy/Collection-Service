@@ -6,52 +6,61 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 namespace Course_project.Controllers
 {
     public class CollectionsController : Controller
     {
         private readonly UserManager<User> _userManager;
+        private readonly ApplicationContext  _context;
         private readonly SignInManager<User> _signInManager;
-        public CollectionsController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public CollectionsController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         [HttpGet]
+        public async Task<ActionResult> Index(Guid collectionId)
+        {
+            Collection collection = _context.Collections.Find(collectionId);
+            ViewBag.Collection = collection;
+            var items = _context.Items.Where(p => p.CollectionId.Equals(collectionId)).ToList();
+            return View(items);
+        }
         public IActionResult Create(string userid)
         {
             ViewBag.Id = userid;
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(CollectionViewModel model, string userId)
         {
             if (ModelState.IsValid)
             {
                 User user = await _userManager.FindByIdAsync(userId);
-                Collection collection = new Collection { Name = model.Name, Theme = model.Theme, Summary = model.Summary, UrlImg = model.Img, Owner = user.UserName };
-                if (user.Collections == null)
-                {
-                    user.Collections = new List<Collection>() { collection };
-                }
-                else
-                {
-                    user.Collections.Add(collection);
-                }
-                //await _userManager.(user);
+                Collection collection = new Collection { Name = model.Name, Theme = model.Theme, Summary = model.Summary, UrlImg = model.Img, Owner = user.UserName, UserId= user.Id };
+                _context.Collections.Add(collection);
+                await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Profile", userId);
             }
             return View(model);
         }
 
-        public async Task<IActionResult> Delete(Collection collection)
+        public async Task<IActionResult> Delete(Guid[] selectedCollections)
         {
-            User user = await _userManager.FindByNameAsync(collection.Owner);
-            user.Collections.Remove(collection);
-            await _userManager.UpdateAsync(user);
-            return RedirectToAction("Index","Profile");
+            foreach (var id in selectedCollections)
+            {
+                Collection collection = _context.Collections.Find(id);
+                if (collection == null)
+                {
+                    return NotFound();
+                }
+                _context.Collections.Remove(collection);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Index", "Profile");
         }
 
     }

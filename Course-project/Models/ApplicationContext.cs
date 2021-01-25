@@ -7,6 +7,8 @@ namespace Course_project.Models
     public class ApplicationContext : IdentityDbContext<User>
     {
         public DbSet<Collection> Collections { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<User> Users { get; set; }
         public ApplicationContext(DbContextOptions<ApplicationContext> dbContextOptions) : base(dbContextOptions)
         {
             Database.EnsureCreated();
@@ -14,7 +16,6 @@ namespace Course_project.Models
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Collection>().HasKey(x => x.Name);
             base.OnModelCreating(builder);
         }
     }

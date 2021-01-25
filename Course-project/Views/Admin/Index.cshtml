@@ -4,8 +4,8 @@
     ViewBag.Title = "List of Users";
 }
 <h2>@Localizer["ListOfUsers"]</h2>
-<form id='form1' method="post">
-    <button type="submit" class="btn btn-primary m-1" asp-controller="Admin" asp-action="Delete">@Localizer[""]</button>
+<form id='users' method="post">
+    <button type="submit" class="btn btn-primary m-1" asp-controller="Admin" asp-action="Delete">@Localizer["BtnDelete"]</button>
     <button type="submit" class="btn btn-primary m-1" asp-controller="Admin" asp-action="Block">@Localizer["BtnBlock"]</button>
     <button type="submit" class="btn btn-primary m-1" asp-controller="Admin" asp-action="UnBlock">@Localizer["BtnUnBlock"]</button>
 
@@ -24,7 +24,7 @@
                 <td><a asp-controller="Profile" asp-action="Index" asp-route-userid="@user.Id">@user.UserName</a></td>
                 <td><a class="btn btn-sm btn-primary text-center" asp-controller="Roles" asp-action="Edit" asp-route-userid="@user.Id">@Localizer["Roles"]</a></td>
                 <td>@user.Status</td>
-                <td><input type="checkbox" class="qwe" name="selectedUsers" value="@user.UserName" /></td>
+                <td><input type="checkbox" class="user" name="selectedUsers" value="@user.UserName" /></td>
             </tr>
         }
     </table>
@@ -33,10 +33,10 @@
 <a class="btn btn-sm btn-primary" asp-controller="Roles" asp-action="Index">@Localizer["BtnRolesList"]</a>
 
 <script>
-    var f = document.getElementById('form1');
+    var f = document.getElementById('users');
     f.cb_all.onchange = function (e) {
         var el = e.target || e.srcElement;
-        var qwe = el.form.getElementsByClassName('qwe');
+        var qwe = el.form.getElementsByClassName('user');
         for (var i = 0; i < qwe.length; i++) {
             if (el.checked) {
                 qwe[i].checked = true;

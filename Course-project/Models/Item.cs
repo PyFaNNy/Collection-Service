@@ -4,9 +4,10 @@ namespace Course_project.Models
 {
     public class Item
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Tags { get; set; }
+        public string CollectionId { get; set; }
 
         public string NameNumField1 { get; set; }
         public string NameNumField2 { get; set; }
@@ -43,6 +44,5 @@ namespace Course_project.Models
         public bool CheckField2 { get; set; }
         public bool CheckField3 { get; set; }
 
-        public int BitMask { get; set; }
     }
 }
