@@ -43,13 +43,14 @@ namespace Course_project.Controllers
                 Collection collection = new Collection { Name = model.Name, Theme = model.Theme, Summary = model.Summary, UrlImg = model.Img, Owner = user.UserName, UserId= user.Id };
                 _context.Collections.Add(collection);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Profile", userId);
+                return RedirectToAction("Index", "Profile", new { userId });
             }
             return View(model);
         }
 
         public async Task<IActionResult> Delete(Guid[] selectedCollections)
         {
+            string userId = _context.Collections.Find(selectedCollections[0]).UserId;
             foreach (var id in selectedCollections)
             {
                 Collection collection = _context.Collections.Find(id);
@@ -57,10 +58,11 @@ namespace Course_project.Controllers
                 {
                     return NotFound();
                 }
+                
                 _context.Collections.Remove(collection);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Index", "Profile");
+            return RedirectToAction("Index", "Profile", new { userId });
         }
 
     }
