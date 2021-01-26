@@ -28,6 +28,10 @@ namespace Course_project.Controllers
             var items = _context.Items.Where(p => p.CollectionId.Equals(collectionId)).ToList();
             return View(items);
         }
+        public async Task<ActionResult> Collections()
+        {
+            return View(_context.Collections.ToList());
+        }
         public IActionResult Create(string userid)
         {
             ViewBag.Id = userid;

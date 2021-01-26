@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+<h4>@Localizer["Collections"]</h4>
+<form id='collections' method="post">
+    @if (User.IsInRole("admin"))
+    {
+        <button type="submit" class="btn btn-primary m-1" asp-controller="Collections" asp-action="Delete">@Localizer["BtnDeleteCollections"]</button>
+    }
+
+    <table class="table table-striped table-hover">
+        <tr>
+            <th>@Localizer["Name"]</th>
+            <th>@Localizer["Theme"]</th>
+            <th>@Localizer["NumberItems"]</th>
+            <th>@Localizer["Summary"]</th>
+            @if (User.IsInRole("admin"))
+            {
+                <th><input type="checkbox" name="cb_all"></th>
+            }
+        </tr>
+
+        @if (Model != null)
+            @foreach (var collection in Model)
+            {
+                <tr>
+                    <td><a asp-controller="Collections" asp-action="Index" asp-route-collectionId="@collection.Id">@collection.Name</a></td>
+                    <td>@collection.Theme</td>
+                    <td>@collection.Items.Count</td>
+                    <td>@collection.Summary</td>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <td><input type="checkbox" class="collection" name="selectedCollections" value="@collection.Id" /></td>
+                    }
+                </tr>
+            }
+    </table>
+</form>
+
+<script>
+    var f = document.getElementById('collections');
+    f.cb_all.onchange = function (e) {
+        var el = e.target || e.srcElement;
+        var qwe = el.form.getElementsByClassName('collection');
+        for (var i = 0; i < qwe.length; i++) {
+            if (el.checked) {
+                qwe[i].checked = true;
+            } else {
+                qwe[i].checked = false;
+            }
+        }
+    }
+</script>
