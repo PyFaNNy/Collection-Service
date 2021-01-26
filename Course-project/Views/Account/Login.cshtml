@@ -13,17 +13,17 @@
       asp-route-returnUrl="@Model.ReturnUrl">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
-        <label asp-for="@Localizer["Name"]"></label><br />
+        <label asp-for="Name">@Localizer["Name"]</label><br />
         <input asp-for="Name" />
         <span asp-validation-for="Name"></span>
     </div>
     <div>
-        <label asp-for="@Localizer["Password"]"></label><br />
+        <label asp-for="Password">@Localizer["Password"]</label><br />
         <input asp-for="Password" />
         <span asp-validation-for="Password"></span>
     </div>
     <div>
-        <label asp-for="@Localizer["RememberMe"]"></label><br />
+        <label asp-for="RememberMe">@Localizer["RememberMe"]</label><br />
         <input asp-for="RememberMe" />
     </div>
     <div>

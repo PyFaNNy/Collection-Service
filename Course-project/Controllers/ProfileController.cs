@@ -23,10 +23,20 @@ namespace Course_project.Controllers
         }
 
         // GET: ProfileController
-        public async Task<ActionResult> Index(string userId)
+        public async Task<ActionResult> Index(string userId, string name)
         {
-            User user =await _userManager.FindByIdAsync(userId);
-            ViewBag.User = user;
+            User user = new User();
+            if (userId != null)
+            {
+                user = await _userManager.FindByIdAsync(userId);
+                ViewBag.User = user;
+            }
+            if (name!= null)
+            {
+                user = await _userManager.FindByNameAsync(name);
+                ViewBag.User = user;
+            }
+            
             var collections = _context.Collections.Where(p => p.UserId.Equals(user.Id)).ToList();
             return View(collections);
         }
