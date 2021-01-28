@@ -6,7 +6,8 @@ namespace Course_project.Models
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string Tags { get; set; }
+        public string Description { get; set; }
+        public string UrlImg { get; set; }
         public string CollectionId { get; set; }
 
         public string NameNumField1 { get; set; }

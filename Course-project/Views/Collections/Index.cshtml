@@ -3,26 +3,29 @@
 <h2>User: @ViewBag.Collection.Owner</h2>
 <h4>Name of Collection: @ViewBag.Collection.Name </h4>
 <form id='items' method="post">
-    <button type="submit" class="btn btn-primary m-1" asp-controller="Collections" asp-action="Delete">Add Item</button>
-    <button type="submit" class="btn btn-primary m-1" asp-controller="Collections" asp-action="Block">Delete Item</button>
-
+    @if (User.IsInRole("admin") || User.Identity.Name.Equals(ViewBag.Collection.Owner))
+    {
+        <button type="submit" class="btn btn-primary m-1" asp-controller="Item" asp-action="Create">Add Item</button>
+        <button type="submit" class="btn btn-primary m-1" asp-controller="Item" asp-action="Delete">Delete Item</button>
+    }
     <table class="table table-striped table-hover">
         <tr>
-            <th>Id</th>
-            <th>Theme</th>
             <th>Name</th>
-            <th>Number of Items</th>
-            <th>Summary</th>
-            <th>Tags</th>
-            <th><input type="checkbox" name="cb_all"></th>
+            <th>Description</th>
+            @if (User.IsInRole("admin") || User.Identity.Name.Equals(ViewBag.Collection.Owner))
+            {
+                <th><input type="checkbox" name="cb_all"></th>
+            }
         </tr>
         @foreach (var items in Model)
         {
             <tr>
                 <td><a asp-controller="Collections" asp-action="Index" asp-route-id="@items.Id">@items.Name</a></td>
-                <td>@items.Theme</td>
-                <td>@items.Summary</td>
-                <td><input type="checkbox" class="qwe" name="item" value="" /></td>
+                <td>@items.Description</td>
+                @if (User.IsInRole("admin") || User.Identity.Name.Equals(ViewBag.Collection.Owner))
+                {
+                    <td><input type="checkbox" class="qwe" name="item" value="" /></td>
+                }
             </tr>
         }
     </table>

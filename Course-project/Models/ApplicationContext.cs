@@ -8,7 +8,8 @@ namespace Course_project.Models
     {
         public DbSet<Collection> Collections { get; set; }
         public DbSet<Item> Items { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Like> Likes { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public ApplicationContext(DbContextOptions<ApplicationContext> dbContextOptions) : base(dbContextOptions)
         {
             Database.EnsureCreated();

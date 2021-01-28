@@ -1,28 +1,25 @@
 ﻿@model Course_project.ViewModels.CollectionViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 <h2>New Collection Creating</h2>
 <form method="post" asp-controller="Collections" asp-action="Create" asp-route-userid="@ViewBag.Id">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
-        <label asp-for="Name"></label><br />
+        <label asp-for="Name">@Localizer["Name"]</label><br />
         <input asp-for="Name" />
         <span asp-validation-for="Name"></span>
     </div>
     <div>
-        <label asp-for="Theme"></label><br />
+        <label asp-for="Theme">@Localizer["Theme"]</label><br />
         <input asp-for="Theme" />
         <span asp-validation-for="Theme"></span>
     </div>
     <div>
-        <label asp-for="Summary"></label><br />
+        <label asp-for="Summary">@Localizer["Summary"]</label><br />
         <input asp-for="Summary" />
         <span asp-validation-for="Summary"></span>
     </div>
     <div>
-        <label asp-for="Img"></label><br />
-        <input asp-for="Img" />
-        <span asp-validation-for="Img"></span>
-    </div>
-    <div>
-        <button type="submit" class="btn btn-primary mt-1">Create</button>
+        <button type="submit" class="btn btn-primary mt-1">@Localizer["Create"]</button>
     </div>
 </form>

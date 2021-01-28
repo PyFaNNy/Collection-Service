@@ -1,0 +1,13 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+<h2>Item: </h2>
+
+<form method="post">
+    <input/>
+    <span ></span>
+    <button type="submit" class="btn btn-primary m-1" asp-controller="Item" asp-action="Comment">Comment</button>
+</form>
+<form method="post">
+    <button type="submit" class="btn btn-primary m-1" asp-controller="Item" asp-action="Like">Like</button>
+</form>
+

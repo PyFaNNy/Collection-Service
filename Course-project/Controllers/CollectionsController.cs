@@ -44,7 +44,7 @@ namespace Course_project.Controllers
             if (ModelState.IsValid)
             {
                 User user = await _userManager.FindByIdAsync(userId);
-                Collection collection = new Collection { Name = model.Name, Theme = model.Theme, Summary = model.Summary, UrlImg = model.Img, Owner = user.UserName, UserId= user.Id };
+                Collection collection = new Collection { Name = model.Name, Theme = model.Theme, Summary = model.Summary, Owner = user.UserName, UserId= user.Id };
                 _context.Collections.Add(collection);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Profile", new { userId });

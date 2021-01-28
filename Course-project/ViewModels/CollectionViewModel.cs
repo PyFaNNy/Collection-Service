@@ -16,10 +16,5 @@ namespace Course_project.ViewModels
         [Display(Name = "Summary")]
         public string Summary { get; set; }
 
-
-        [Required]
-        [Display(Name = "Img")]
-        public string Img { get; set; }
-
     }
 }

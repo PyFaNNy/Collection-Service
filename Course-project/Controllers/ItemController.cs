@@ -2,8 +2,6 @@
 using Course_project.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Course_project.Controllers
@@ -20,27 +18,28 @@ namespace Course_project.Controllers
             Item item = _context.Items.Find(ItemId);
             return View(item);
         }
-        public IActionResult Create(string userid)
+        public IActionResult Create(string collectionId)
         {
-            ViewBag.Id = userid;
+            ViewBag.Id = collectionId;
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ItemViewModel model, string userId)
+        public async Task<IActionResult> Create(ItemViewModel model, string collectionId)
         {
             if (ModelState.IsValid)
             {
-                Item item = new Item { };
+                Item item = new Item { Name = model.Name, Description= model.Description,  CollectionId = collectionId };
                 _context.Items.Add(item);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Profile", userId);
+                return RedirectToAction("Index", "Collections", collectionId);
             }
             return View(model);
         }
 
         public async Task<IActionResult> Delete(Guid[] selectedItems)
         {
+            string collectionId = _context.Items.Find(selectedItems[0]).CollectionId;
             foreach (var id in selectedItems)
             {
                 Item item = _context.Items.Find(id);
@@ -51,7 +50,7 @@ namespace Course_project.Controllers
                 _context.Items.Remove(item);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Index", "Collections");
+            return RedirectToAction("Index", "Collections", collectionId);
         }
     }
 }
