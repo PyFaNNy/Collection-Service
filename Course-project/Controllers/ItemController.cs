@@ -25,11 +25,13 @@ namespace Course_project.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ItemViewModel model, string collectionId)
+        public async Task<IActionResult> Create(ItemViewModel model, Guid collectionId)
         {
             if (ModelState.IsValid)
             {
-                Item item = new Item { Name = model.Name, Description= model.Description,  CollectionId = collectionId };
+                Collection collection = _context.Collections.Find(collectionId);
+                collection.CountItems++;
+                Item item = new Item { Name = model.Name, Description= model.Description,  CollectionId = collectionId.ToString() };
                 _context.Items.Add(item);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Collections",new { collectionId });
@@ -40,6 +42,7 @@ namespace Course_project.Controllers
         public async Task<IActionResult> Delete(Guid[] selectedItems)
         {
             string collectionId = _context.Items.Find(selectedItems[0]).CollectionId;
+            Collection collection = _context.Collections.Find(new Guid(collectionId));
             foreach (var id in selectedItems)
             {
                 Item item = _context.Items.Find(id);
@@ -47,10 +50,11 @@ namespace Course_project.Controllers
                 {
                     return NotFound();
                 }
+                collection.CountItems--;
                 _context.Items.Remove(item);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Index", "Collections", collectionId);
+            return RedirectToAction("Index", "Collections", new { collectionId });
         }
     }
 }

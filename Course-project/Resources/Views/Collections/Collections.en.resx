@@ -138,6 +138,9 @@
   <data name="NumberItems" xml:space="preserve">
     <value>Number of Items</value>
   </data>
+  <data name="Owner" xml:space="preserve">
+    <value>Owner</value>
+  </data>
   <data name="Summary" xml:space="preserve">
     <value>Summary</value>
   </data>

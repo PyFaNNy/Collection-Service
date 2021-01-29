@@ -12,6 +12,7 @@
             <th>@Localizer["Name"]</th>
             <th>@Localizer["Theme"]</th>
             <th>@Localizer["NumberItems"]</th>
+            <th>@Localizer["Owner"]</th>
             <th>@Localizer["Summary"]</th>
             @if (User.IsInRole("admin"))
             {
@@ -22,16 +23,17 @@
         @if (Model != null)
             @foreach (var collection in Model)
             {
-                <tr>
-                    <td><a asp-controller="Collections" asp-action="Index" asp-route-collectionId="@collection.Id">@collection.Name</a></td>
-                    <td>@collection.Theme</td>
-                    <td>@collection.Items.Count</td>
-                    <td>@collection.Summary</td>
-                    @if (User.IsInRole("admin"))
-                    {
-                        <td><input type="checkbox" class="collection" name="selectedCollections" value="@collection.Id" /></td>
-                    }
-                </tr>
+    <tr>
+        <td><a asp-controller="Collections" asp-action="Index" asp-route-collectionId="@collection.Id">@collection.Name</a></td>
+        <td>@collection.Theme</td>
+        <td>@collection.CountItems</td>
+        <td>@collection.Owner</td>
+        <td>@collection.Summary</td>
+        @if (User.IsInRole("admin"))
+        {
+            <td><input type="checkbox" class="collection" name="selectedCollections" value="@collection.Id" /></td>
+        }
+    </tr>
             }
     </table>
 </form>

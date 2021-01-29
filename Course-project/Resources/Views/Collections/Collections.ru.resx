@@ -135,6 +135,9 @@
   <data name="NumberItems" xml:space="preserve">
     <value>Количество элементов</value>
   </data>
+  <data name="Owner" xml:space="preserve">
+    <value>Владелец</value>
+  </data>
   <data name="Summary" xml:space="preserve">
     <value>Краткое описание</value>
   </data>

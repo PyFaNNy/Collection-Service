@@ -44,7 +44,7 @@ namespace Course_project.Controllers
             if (ModelState.IsValid)
             {
                 User user = await _userManager.FindByIdAsync(userId);
-                Collection collection = new Collection { Name = model.Name, Theme = model.Theme, Summary = model.Summary, Owner = user.UserName, UserId= user.Id };
+                Collection collection = new Collection { Name = model.Name, Theme = model.Theme, Summary = model.Summary, Owner = user.UserName, UserId= user.Id, CountItems=0 };
                 _context.Collections.Add(collection);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Profile", new { userId });
@@ -58,12 +58,16 @@ namespace Course_project.Controllers
             foreach (var id in selectedCollections)
             {
                 Collection collection = _context.Collections.Find(id);
+                var items = _context.Items.Where(p => p.CollectionId == id.ToString()).ToList();
                 if (collection == null)
                 {
                     return NotFound();
                 }
-                
                 _context.Collections.Remove(collection);
+                foreach(var item in items)
+                {
+                    _context.Items.Remove(item);
+                }
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("Index", "Profile", new { userId });

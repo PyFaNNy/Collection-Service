@@ -11,6 +11,6 @@ namespace Course_project.Models
         public string Summary { get; set; }
         public string Theme { get; set; }
         public string Owner { get; set; }
-        public List<Item> Items { get; set; } = new List<Item>();
+        public int CountItems { get; set; }
     }
 }
