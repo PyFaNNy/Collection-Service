@@ -21,14 +21,14 @@ namespace Course_project.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Index(Guid collectionId)
+        public ActionResult Index(Guid collectionId)
         {
             Collection collection = _context.Collections.Find(collectionId);
             ViewBag.Collection = collection;
-            var items = _context.Items.Where(p => p.CollectionId==collectionId.ToString()).ToList();
+            var items = _context.Items.Where(p => p.CollectionId == collectionId.ToString()).ToList();
             return View(items);
         }
-        public async Task<ActionResult> Collections()
+        public ActionResult Collections()
         {
             return View(_context.Collections.ToList());
         }

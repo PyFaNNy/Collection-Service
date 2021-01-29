@@ -13,7 +13,7 @@ namespace Course_project.Controllers
         {
             _context = context;
         }
-        public async Task<ActionResult> Index(Guid ItemId)
+        public ActionResult Index(Guid ItemId)
         {
             Item item = _context.Items.Find(ItemId);
             return View(item);

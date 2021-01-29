@@ -11,8 +11,15 @@
     </div>
     <div>
         <label asp-for="Theme">@Localizer["Theme"]</label><br />
-        <input asp-for="Theme" />
-        <span asp-validation-for="Theme"></span>
+        @*<input asp-for="Theme" />
+        <span asp-validation-for="Theme"></span>*@
+        <select asp-for="Theme" >
+            <option value="Books">@Localizer["Books"]</option>
+            <option value="Money">@Localizer["Money"]</option>
+            <option value="Guns">@Localizer["Guns"]</option>
+            <option value="Stamps">@Localizer["Stamps"]</option>
+            <option value="Alcohol">@Localizer["Alcohol"]</option>
+        </select>
     </div>
     <div>
         <label asp-for="Summary">@Localizer["Summary"]</label><br />

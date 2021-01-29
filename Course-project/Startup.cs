@@ -28,6 +28,8 @@ namespace Course_project
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddSignalR();
+
             services.AddAuthentication()
                 .AddGoogle(options =>
             {
@@ -92,6 +94,7 @@ namespace Course_project
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<ItemHub>("/Item");
             });
         }
     }
