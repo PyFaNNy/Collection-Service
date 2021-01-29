@@ -25,7 +25,7 @@ namespace Course_project.Controllers
         {
             Collection collection = _context.Collections.Find(collectionId);
             ViewBag.Collection = collection;
-            var items = _context.Items.Where(p => p.CollectionId.Equals(collectionId)).ToList();
+            var items = _context.Items.Where(p => p.CollectionId==collectionId.ToString()).ToList();
             return View(items);
         }
         public async Task<ActionResult> Collections()

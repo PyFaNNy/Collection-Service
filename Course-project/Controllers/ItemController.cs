@@ -32,7 +32,7 @@ namespace Course_project.Controllers
                 Item item = new Item { Name = model.Name, Description= model.Description,  CollectionId = collectionId };
                 _context.Items.Add(item);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Collections", collectionId);
+                return RedirectToAction("Index", "Collections",new { collectionId });
             }
             return View(model);
         }
