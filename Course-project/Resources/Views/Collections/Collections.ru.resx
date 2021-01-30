@@ -117,14 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Alcohol" xml:space="preserve">
+    <value>Алкоголь</value>
+  </data>
+  <data name="Books" xml:space="preserve">
+    <value>Книги</value>
+  </data>
   <data name="BtnDeleteCollections" xml:space="preserve">
     <value>Удалить Коллекцию</value>
   </data>
   <data name="Collections" xml:space="preserve">
     <value>Коллекции</value>
   </data>
+  <data name="Guns" xml:space="preserve">
+    <value>Оружие</value>
+  </data>
   <data name="ID" xml:space="preserve">
     <value>Индификатор</value>
+  </data>
+  <data name="Money" xml:space="preserve">
+    <value>Деньги</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Имя</value>
@@ -137,6 +149,9 @@
   </data>
   <data name="Owner" xml:space="preserve">
     <value>Владелец</value>
+  </data>
+  <data name="Stamps" xml:space="preserve">
+    <value>Марки</value>
   </data>
   <data name="Summary" xml:space="preserve">
     <value>Краткое описание</value>

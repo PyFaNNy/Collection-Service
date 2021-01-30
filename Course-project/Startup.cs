@@ -8,8 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Mvc.Razor;
+
 
 namespace Course_project
 {
@@ -94,7 +93,7 @@ namespace Course_project
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapHub<ItemHub>("/Item");
+                endpoints.MapHub<ServiceHub>("/Items");
             });
         }
     }

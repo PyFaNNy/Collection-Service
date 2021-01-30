@@ -2,6 +2,7 @@
 using Course_project.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Course_project.Controllers
@@ -16,6 +17,9 @@ namespace Course_project.Controllers
         public ActionResult Index(Guid ItemId)
         {
             Item item = _context.Items.Find(ItemId);
+            var comments = _context.Comments.Where(p => p.ItemId==ItemId.ToString()).ToList();
+            ViewBag.Comments = comments;
+            ViewBag.Likes = _context.Likes.Where(p => p.ItemId == ItemId.ToString()).ToList().Count; ;
             return View(item);
         }
         public IActionResult Create(string collectionId)
@@ -52,6 +56,16 @@ namespace Course_project.Controllers
                 }
                 collection.CountItems--;
                 _context.Items.Remove(item);
+                var likes = _context.Likes.Where(p => p.ItemId == id.ToString()).ToList();
+                foreach(var like in likes)
+                {
+                    _context.Likes.Remove(like);
+                }
+                var comments = _context.Comments.Where(p => p.ItemId == id.ToString()).ToList();
+                foreach (var comment in comments)
+                {
+                    _context.Comments.Remove(comment);
+                }
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("Index", "Collections", new { collectionId });
