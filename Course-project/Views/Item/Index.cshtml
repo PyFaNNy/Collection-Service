@@ -2,7 +2,7 @@
 @inject IViewLocalizer Localizer
 <h2>Item:@Model.Name </h2>
 
-<span>@ViewBag.Likes</span>
+<span id="counts">@ViewBag.Likes</span>
 <button  class="btn btn-primary m-1" id="likeBtn" >Like</button>
 <input type="text" id="comment" />
 <button class="btn btn-primary m-1" id="commentBtn">Comment</button>
@@ -48,7 +48,8 @@
     });
 
     hubConnection.on('getLike', function (data) {
-        document.getElementById("divInfo").hidden = false;
+        var counts = document.getElementById("counts");
+        counts.textContent = data;
     });
 
     hubConnection.on('getConnected', function (data) {
@@ -67,8 +68,9 @@
     });
 
     document.getElementById("likeBtn").addEventListener("click", function (e) {
-        let id="@Model.Id";
-        hubConnection.invoke("Like", id);
+        let id = "@Model.Id";
+        let name="@User.Identity.Name";
+        hubConnection.invoke("Like", id, name);
     });
 
     hubConnection.start();
