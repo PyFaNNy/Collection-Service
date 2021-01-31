@@ -27,7 +27,6 @@
     const hubConnection = new signalR.HubConnectionBuilder()
         .withUrl("/Items")
         .build();
-
     hubConnection.on('getComment', function (data) {
         var div = document.getElementById('games');
         while (div.firstChild) {
@@ -52,6 +51,14 @@
         document.getElementById("divInfo").hidden = false;
     });
 
+    hubConnection.on('getConnected', function (data) {
+        let id = "@Model.Id";
+        hubConnection.invoke("GetGroup", id);
+    });
+    hubConnection.on('getDisConnected', function (data) {
+        let id = "@Model.Id";
+        hubConnection.invoke("DelGroup", id);
+    });
     document.getElementById("commentBtn").addEventListener("click", function (e) {
         let comment = document.getElementById("comment").value;
         let id = "@Model.Id";
