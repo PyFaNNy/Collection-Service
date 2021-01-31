@@ -39,7 +39,7 @@ namespace Course_project
             Like like = new Like { UserId = UserName, ItemId = itemId };
             _context.Likes.Add(like);
             await _context.SaveChangesAsync();
-            var likes = _context.Comments.Where(p => p.ItemId.Equals(itemId)).ToList().Count;
+            var likes = _context.Likes.Where(p => p.ItemId==itemId).ToList().Count;
             await this.Clients.Group(itemId).SendAsync("getLike", likes);
         }
         public override async Task OnConnectedAsync()
