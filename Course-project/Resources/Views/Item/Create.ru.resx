@@ -117,22 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BtnCreateItem" xml:space="preserve">
-    <value>Create Item</value>
-  </data>
-  <data name="BtnDeleteItem" xml:space="preserve">
-    <value>Delete Item</value>
+  <data name="Create" xml:space="preserve">
+    <value>Создать</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Description</value>
+    <value>Описание</value>
+  </data>
+  <data name="Img" xml:space="preserve">
+    <value>Картинка</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Name</value>
+    <value>Имя</value>
   </data>
-  <data name="NameCollection" xml:space="preserve">
-    <value>Name of Collections</value>
-  </data>
-  <data name="User" xml:space="preserve">
-    <value>User:</value>
+  <data name="NewItem" xml:space="preserve">
+    <value>Создание нового предмета</value>
   </data>
 </root>

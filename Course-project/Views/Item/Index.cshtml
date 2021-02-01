@@ -1,11 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
-<h2>Item:@Model.Name </h2>
+<h2>@Localizer["Item"]:@Model.Name </h2>
 
 <span id="counts">@ViewBag.Likes</span>
-<button  class="btn btn-primary m-1" id="likeBtn" >Like</button>
+<button class="btn btn-primary m-1" id="likeBtn">@Localizer["Like"]</button>
 <input type="text" id="comment" />
-<button class="btn btn-primary m-1" id="commentBtn">Comment</button>
+<button class="btn btn-primary m-1" id="commentBtn">@Localizer["Comment"]</button>
 
 <table class="table table-striped table-hover">
     <tbody id="games">

@@ -1,17 +1,17 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
-<h2>User: @ViewBag.Collection.Owner</h2>
-<h4>Name of Collection: @ViewBag.Collection.Name </h4>
+<h2>@Localizer["User"] @ViewBag.Collection.Owner</h2>
+<h4>@Localizer["NameCollection"]: @ViewBag.Collection.Name </h4>
 <form id='items' method="post">
     @if (User.IsInRole("admin") || User.Identity.Name.Equals(ViewBag.Collection.Owner))
     {
-        <a class="btn btn-primary m-1" asp-controller="Item" asp-action="Create" asp-route-collectionId="@ViewBag.Collection.Id">Add Item</a>
-        <button type="submit" class="btn btn-primary m-1" asp-controller="Item" asp-action="Delete">Delete Item</button>
+    <a class="btn btn-primary m-1" asp-controller="Item" asp-action="Create" asp-route-collectionId="@ViewBag.Collection.Id">@Localizer["BtnCreateItem"]</a>
+        <button type="submit" class="btn btn-primary m-1" asp-controller="Item" asp-action="Delete">@Localizer["BtnDeleteItem"]</button>
     }
     <table class="table table-striped table-hover">
         <tr>
-            <th>Name</th>
-            <th>Description</th>
+            <th>@Localizer["Name"]</th>
+            <th>@Localizer["Description"]</th>
             @if (User.IsInRole("admin") || User.Identity.Name.Equals(ViewBag.Collection.Owner))
             {
                 <th><input type="checkbox" name="cb_all"></th>
