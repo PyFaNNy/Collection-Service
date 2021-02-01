@@ -2,6 +2,7 @@
 using Course_project.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,16 +22,52 @@ namespace Course_project.Controllers
             _context = context;
         }
         [HttpGet]
-        public ActionResult Index(Guid collectionId)
+        public ActionResult Index(Guid collectionId, SortState sortOrder = SortState.NameAscending)
         {
             Collection collection = _context.Collections.Find(collectionId);
             ViewBag.Collection = collection;
-            var items = _context.Items.Where(p => p.CollectionId == collectionId.ToString()).ToList();
+            IQueryable<Item> items = _context.Items.Where(p => p.CollectionId == collectionId.ToString());
+            ViewData["NameSort"] = sortOrder == SortState.NameAscending ? SortState.NameDescendingly : SortState.NameAscending;
+            switch (sortOrder)
+            {
+                case SortState.NameAscending:
+                    items = items.OrderBy(s => s.Name);
+                    break;
+                default:
+                    items = items.OrderByDescending(s => s.Name);
+                    break;
+            }
             return View(items);
         }
-        public ActionResult Collections()
+        [HttpGet]
+        public ActionResult Collections(SortState sortOrder = SortState.NameAscending)
         {
-            return View(_context.Collections.ToList());
+            IQueryable<Collection> collections = _context.Collections;
+            ViewData["NameSort"] = sortOrder == SortState.NameAscending ?SortState.NameDescendingly : SortState.NameAscending;
+            ViewData["CountSort"] = sortOrder == SortState.CountAscending ?SortState.CountDescendingly : SortState.CountAscending;
+            ViewData["ThemeSort"] = sortOrder == SortState.ThemeAscending ? SortState.ThemeDescendingly : SortState.ThemeAscending;
+            switch (sortOrder)
+            {
+                case SortState.NameAscending:
+                    collections = collections.OrderBy(s => s.Name);
+                    break;
+                case SortState.NameDescendingly:
+                    collections = collections.OrderByDescending(s => s.Name);
+                    break;
+                case SortState.CountDescendingly:
+                    collections = collections.OrderByDescending(s => s.CountItems);
+                    break;
+                case SortState.ThemeAscending:
+                    collections = collections.OrderBy(s => s.Theme);
+                    break;
+                case SortState.ThemeDescendingly:
+                    collections = collections.OrderByDescending(s => s.Theme);
+                    break;
+                default:
+                    collections = collections.OrderBy(s => s.CountItems);
+                    break;
+            }
+            return View(collections.AsNoTracking().ToList());
         }
         [HttpGet]
         public IActionResult Create(string userid)

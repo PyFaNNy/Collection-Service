@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,12 +13,42 @@ namespace Course_project.Controllers
     {
         UserManager<User> _userManager;
         SignInManager<User> _signInManager;
-        public AdminController(UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly ApplicationContext _context;
+        public AdminController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
-        public IActionResult Index() => View(_userManager.Users.ToList());
+        public IActionResult Index(SortState sortOrder = SortState.NameAscending)
+        {
+            IQueryable<User> users = _context.Users;
+            ViewData["NameSort"] = sortOrder == SortState.NameAscending ? SortState.NameDescendingly : SortState.NameAscending;
+            ViewData["EmailSort"] = sortOrder == SortState.EmailAscending ? SortState.EmailDescendingly : SortState.EmailAscending;
+            ViewData["StatusSort"] = sortOrder == SortState.StatusAscending ? SortState.StatusDescendingly : SortState.StatusAscending;
+            switch (sortOrder)
+            {
+                case SortState.NameAscending:
+                    users = users.OrderBy(s => s.UserName);
+                    break;
+                case SortState.NameDescendingly:
+                    users = users.OrderByDescending(s => s.UserName);
+                    break;
+                case SortState.EmailDescendingly:
+                    users = users.OrderByDescending(s => s.Email);
+                    break;
+                case SortState.StatusAscending:
+                    users = users.OrderBy(s => s.Status);
+                    break;
+                case SortState.StatusDescendingly:
+                    users = users.OrderByDescending(s => s.Status);
+                    break;
+                default:
+                    users = users.OrderBy(s => s.Email);
+                    break;
+            }
+            return View(users.AsNoTracking().ToList());
+        }
 
         public async Task<IActionResult> Block(string[] selectedUsers)
         {
