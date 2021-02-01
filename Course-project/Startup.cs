@@ -31,25 +31,25 @@ namespace Course_project
 
             services.AddAuthentication()
                 .AddGoogle(options =>
-            {
-                options.ClientId = Configuration["Authentication:Google:AppId"];
-                options.ClientSecret = Configuration["Authentication:Google:AppSecret"];
-            }).AddFacebook(options =>
+                {
+                    options.ClientId = Configuration["Authentication:Google:AppId"];
+                    options.ClientSecret = Configuration["Authentication:Google:AppSecret"];
+                }).AddFacebook(options =>
                 {
                     options.AppId = Configuration["Authentication:Facebook:AppId"];
                     options.AppSecret = Configuration["Authentication:Facebook:AppSecret"]; ;
                 });
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddIdentity<User, IdentityRole>(options =>
-             {
-                 options.Password.RequiredLength = 1;
-                 options.Password.RequireNonAlphanumeric = false;
-                 options.Password.RequireLowercase = false;
-                 options.Password.RequireUppercase = false;
-                 options.Password.RequireDigit = false;
-             })
+            {
+                options.Password.RequiredLength = 1;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+            })
                .AddEntityFrameworkStores<ApplicationContext>();
-            
+
             services.AddMvc()
                 .AddDataAnnotationsLocalization()
                 .AddViewLocalization();

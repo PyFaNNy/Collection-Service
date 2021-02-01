@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Course_project.Controllers
 {
+    [Route("[controller]/[action]")]
     [Authorize(Roles = "admin")]
     public class RolesController : Controller
     {

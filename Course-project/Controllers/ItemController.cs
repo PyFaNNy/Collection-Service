@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Course_project.Controllers
 {
+    [Route("[controller]/[action]")]
     public class ItemController : Controller
     {
         private readonly ApplicationContext _context;

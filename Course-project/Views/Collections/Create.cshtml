@@ -1,7 +1,7 @@
 ﻿@model Course_project.ViewModels.CollectionViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
-<h2>New Collection Creating</h2>
+<h2>@Localizer["NewColl"]</h2>
 <form method="post" asp-controller="Collections" asp-action="Create" asp-route-userid="@ViewBag.Id">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
@@ -11,7 +11,7 @@
     </div>
     <div>
         <label asp-for="Theme">@Localizer["Theme"]</label><br />
-        <select asp-for="Theme" >
+        <select asp-for="Theme">
             <option value="Books">@Localizer["Books"]</option>
             <option value="Money">@Localizer["Money"]</option>
             <option value="Guns">@Localizer["Guns"]</option>

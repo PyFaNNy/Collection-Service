@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 namespace Course_project.Controllers
 {
+    [Route("[controller]/[action]")]
     public class CollectionsController : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -19,7 +20,6 @@ namespace Course_project.Controllers
             _signInManager = signInManager;
             _context = context;
         }
-
         [HttpGet]
         public ActionResult Index(Guid collectionId)
         {
@@ -32,6 +32,7 @@ namespace Course_project.Controllers
         {
             return View(_context.Collections.ToList());
         }
+        [HttpGet]
         public IActionResult Create(string userid)
         {
             ViewBag.Id = userid;
@@ -51,7 +52,7 @@ namespace Course_project.Controllers
             }
             return View(model);
         }
-
+        [HttpPost]
         public async Task<IActionResult> Delete(Guid[] selectedCollections)
         {
             string userId = _context.Collections.Find(selectedCollections[0]).UserId;

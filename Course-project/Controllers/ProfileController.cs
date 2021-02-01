@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Course_project.Controllers
 {
+    [Route("[controller]/[action]")]
     public class ProfileController : Controller
     {
         private readonly UserManager<User> _userManager;
