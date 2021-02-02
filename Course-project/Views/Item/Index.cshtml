@@ -2,6 +2,12 @@
 @inject IViewLocalizer Localizer
 <h2>@Localizer["Item"]:@Model.Name </h2>
 
+@if (Model.UrlImg != null)
+{
+    <img src="@Model.UrlImg" alt="Image" style="width: 150px; height: 220px;" />
+}
+
+
 <span id="counts">@ViewBag.Likes</span>
 <button class="btn btn-primary m-1" id="likeBtn">@Localizer["Like"]</button>
 <input type="text" id="comment" />
@@ -22,7 +28,7 @@
 
 
 
-<script src="~/js/microsoft/signalr/dist/browser/signalr.min.js"></script>    
+<script src="~/js/microsoft/signalr/dist/browser/signalr.min.js"></script>
 <script>
     const hubConnection = new signalR.HubConnectionBuilder()
         .withUrl("/Items")
