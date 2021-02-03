@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 namespace Course_project.CloudStorage
 {
-    public class ICloudStorage
+    public interface ICloudStorage
     {
+        Task<string> UploadFileAsync(IFormFile imageFile, string fileNameForStorage);
+        Task DeleteFileAsync(string fileNameForStorage);
     }
 }

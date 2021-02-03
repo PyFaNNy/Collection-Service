@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Course_project.Models
 {
@@ -8,6 +9,7 @@ namespace Course_project.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        [NotMapped]
         public IFormFile Img { get; set; }
         public string ImageStorageName { get; set; }
         public string UrlImg { get; set; }

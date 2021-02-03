@@ -1,7 +1,9 @@
-﻿using Course_project.Models;
+﻿using Course_project.CloudStorage;
+using Course_project.Models;
 using Course_project.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,9 +13,11 @@ namespace Course_project.Controllers
     public class ItemController : Controller
     {
         private readonly ApplicationContext _context;
-        public ItemController( ApplicationContext context)
+        private readonly ICloudStorage _cloudStorage;
+        public ItemController( ApplicationContext context, ICloudStorage cloudStorage)
         {
             _context = context;
+            _cloudStorage = cloudStorage;
         }
         public ActionResult Index(Guid ItemId)
         {
@@ -36,7 +40,12 @@ namespace Course_project.Controllers
             {
                 Collection collection = _context.Collections.Find(collectionId);
                 collection.CountItems++;
-                Item item = new Item { Name = model.Name, Description= model.Description,  CollectionId = collectionId.ToString() };
+                Item item = new Item { Name = model.Name, Description = model.Description, CollectionId = collectionId.ToString(), Img=model.Img };
+                if (model.Img != null)
+                {
+                    await UploadFile(item);
+                }
+
                 _context.Items.Add(item);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Collections",new { collectionId });
@@ -70,6 +79,20 @@ namespace Course_project.Controllers
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("Index", "Collections", new { collectionId });
+        }
+
+        private async Task UploadFile(Item item)
+        {
+            string fileNameForStorage = FormFileName(item.Name, item.Img.FileName);
+            item.UrlImg = await _cloudStorage.UploadFileAsync(item.Img, fileNameForStorage);
+            item.ImageStorageName = fileNameForStorage;
+        }
+
+        private static string FormFileName(string title, string fileName)
+        {
+            var fileExtension = Path.GetExtension(fileName);
+            var fileNameForStorage = $"{title}-{DateTime.Now.ToString("yyyyMMddHHmmss")}{fileExtension}";
+            return fileNameForStorage;
         }
     }
 }

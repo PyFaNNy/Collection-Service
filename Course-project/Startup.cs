@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
-
+using Course_project.CloudStorage;
 
 namespace Course_project
 {
@@ -27,6 +27,7 @@ namespace Course_project
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddSingleton<ICloudStorage, GoogleCloudStorage>();
             services.AddSignalR();
 
             services.AddAuthentication()
