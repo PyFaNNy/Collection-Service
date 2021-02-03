@@ -1,32 +1,47 @@
 ﻿@model Course_project.ViewModels.LoginViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
-<h3>@Localizer["LoginExternalProvider"]</h3>
-<form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
-    @foreach (var provider in Model.ExternalProviders)
-    {
-        <button type="submit" name="provider" class="btn btn-primary mt-1" value="@provider.Name">@provider.DisplayName</button>
-    }
-</form>
-<h2>@Localizer["LoginApp"]</h2>
-<form method="post" asp-controller="Account" asp-action="Login"
-      asp-route-returnUrl="@Model.ReturnUrl">
-    <div asp-validation-summary="ModelOnly"></div>
-    <div>
-        <label asp-for="Name">@Localizer["Name"]</label><br />
-        <input asp-for="Name" />
-        <span asp-validation-for="Name"></span>
+
+<div class="row">
+    <div class="col-md-4">
+        <section>
+            <form method="post" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">
+                <h3>@Localizer["LoginApp"]</h3>
+                <hr />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name">@Localizer["Name"]</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password">@Localizer["Password"]</label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label asp-for="RememberMe">@Localizer["RememberMe"]</label>
+                        <input asp-for="RememberMe" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary mt-1">@Localizer["BtnLogin"]</button>
+                </div>
+            </form>
+        </section>
     </div>
-    <div>
-        <label asp-for="Password">@Localizer["Password"]</label><br />
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            <h3>@Localizer["LoginExternalProvider"]</h3>
+            <hr />
+            <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
+                @foreach (var provider in Model.ExternalProviders)
+                {
+                    <button type="submit" name="provider" class="btn btn-primary mt-1" value="@provider.Name">@provider.DisplayName</button>
+
+                }
+            </form>
+        </section>
     </div>
-    <div>
-        <label asp-for="RememberMe">@Localizer["RememberMe"]</label><br />
-        <input asp-for="RememberMe" />
-    </div>
-    <div>
-        <button type="submit" class="btn btn-primary mt-1">@Localizer["BtnLogin"]</button>
-    </div>
-</form>
+</div>

@@ -29,7 +29,7 @@ namespace Course_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User {Email = model.Email, UserName = model.Name, Status="active"};
+                User user = new User {Email = model.Email, UserName = model.UserName, Status="active"};
                 var result = await _userManager.CreateAsync(user, model.Password);
                 await _userManager.AddToRoleAsync(user, "user");
                 if (result.Succeeded)

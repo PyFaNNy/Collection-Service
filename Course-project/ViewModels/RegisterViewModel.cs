@@ -9,6 +9,10 @@ namespace Course_project.ViewModels
         public string Email { get; set; }
 
         [Required]
+        [Display(Name = "UserName")]
+        public string UserName { get; set; }
+
+        [Required]
         [Display(Name = "Login")]
         public string Name { get; set; }
 
