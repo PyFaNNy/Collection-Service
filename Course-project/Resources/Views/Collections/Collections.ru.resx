@@ -135,6 +135,9 @@
   <data name="ID" xml:space="preserve">
     <value>Индификатор</value>
   </data>
+  <data name="Image" xml:space="preserve">
+    <value>Изображение</value>
+  </data>
   <data name="Money" xml:space="preserve">
     <value>Деньги</value>
   </data>

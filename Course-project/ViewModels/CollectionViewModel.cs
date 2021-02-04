@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Course_project.СustomAttributes;
+using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Course_project.ViewModels
 {
@@ -15,6 +17,12 @@ namespace Course_project.ViewModels
         [Required]
         [Display(Name = "Summary")]
         public string Summary { get; set; }
+
+        [Required]
+        [Display(Name = "Img")]
+        [MaxFileSize(1 * 1024 * 1024)]
+        [PermittedExtensions(new string[] { ".jpg", ".png", ".gif", ".jpeg" })]
+        public IFormFile Img { get; set; }
 
     }
 }

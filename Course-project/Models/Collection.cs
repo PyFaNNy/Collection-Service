@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Course_project.Models
 {
@@ -12,5 +14,10 @@ namespace Course_project.Models
         public string Theme { get; set; }
         public string Owner { get; set; }
         public int CountItems { get; set; }
+
+        [NotMapped]
+        public IFormFile Img { get; set; }
+        public string ImageStorageName { get; set; }
+        public string UrlImg { get; set; }
     }
 }

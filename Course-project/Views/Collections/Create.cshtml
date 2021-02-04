@@ -2,29 +2,36 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 <h2>@Localizer["NewColl"]</h2>
-<form method="post" asp-controller="Collections" asp-action="Create" asp-route-userid="@ViewBag.Id">
+<form method="post" enctype="multipart/form-data"  asp-controller="Collections" asp-action="Create" asp-route-userid="@ViewBag.Id">
     <div asp-validation-summary="ModelOnly"></div>
-    <div>
-        <label asp-for="Name">@Localizer["Name"]</label><br />
-        <input asp-for="Name" />
-        <span asp-validation-for="Name"></span>
-    </div>
-    <div>
-        <label asp-for="Theme">@Localizer["Theme"]</label><br />
-        <select asp-for="Theme">
-            <option value="Books">@Localizer["Books"]</option>
-            <option value="Money">@Localizer["Money"]</option>
-            <option value="Guns">@Localizer["Guns"]</option>
-            <option value="Stamps">@Localizer["Stamps"]</option>
-            <option value="Alcohol">@Localizer["Alcohol"]</option>
-        </select>
-    </div>
-    <div>
-        <label asp-for="Summary">@Localizer["Summary"]</label><br />
-        <input asp-for="Summary" />
-        <span asp-validation-for="Summary"></span>
-    </div>
-    <div>
-        <button type="submit" class="btn btn-primary mt-1">@Localizer["Create"]</button>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label asp-for="Name">@Localizer["Name"]</label><br />
+            <input asp-for="Name" />
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Theme">@Localizer["Theme"]</label><br />
+            <select asp-for="Theme">
+                <option value="Books">@Localizer["Books"]</option>
+                <option value="Money">@Localizer["Money"]</option>
+                <option value="Guns">@Localizer["Guns"]</option>
+                <option value="Stamps">@Localizer["Stamps"]</option>
+                <option value="Alcohol">@Localizer["Alcohol"]</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label asp-for="Summary">@Localizer["Summary"]</label><br />
+            <input asp-for="Summary" />
+            <span asp-validation-for="Summary"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Img" class="control-label">@Localizer["Img"]</label>
+            <input type="file" asp-for="Img" class="form-control" />
+            <span asp-validation-for="Img" class="text-danger"></span>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary mt-1">@Localizer["Create"]</button>
+        </div>
     </div>
 </form>

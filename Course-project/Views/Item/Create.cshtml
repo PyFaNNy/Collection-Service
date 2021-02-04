@@ -3,23 +3,26 @@
 @inject IViewLocalizer Localizer
 <h2>@Localizer["NewItem"]</h2>
 <form method="post" asp-controller="Item" asp-action="Create" asp-route-collectionId="@ViewBag.Id" enctype="multipart/form-data">
+
     <div asp-validation-summary="ModelOnly"></div>
-    <div>
-        <label asp-for="Name">@Localizer["Name"]</label><br />
-        <input asp-for="Name" />
-        <span asp-validation-for="Name"></span>
-    </div>
-    <div>
-        <label asp-for="Description">@Localizer["Description"]</label><br />
-        <input asp-for="Description" />
-        <span asp-validation-for="Description"></span>
-    </div>
-    <div>
-        <label asp-for="Img" class="control-label">@Localizer["Img"]</label>
-        <input type="file" asp-for="Img" class="form-control" />
-        <span asp-validation-for="Img" class="text-danger"></span>
-    </div>
-    <div>
-        <button type="submit" class="btn btn-primary mt-1">@Localizer["Create"]</button>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label asp-for="Name">@Localizer["Name"]</label><br />
+            <input asp-for="Name" />
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description">@Localizer["Description"]</label><br />
+            <input asp-for="Description" />
+            <span asp-validation-for="Description"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Img" class="control-label">@Localizer["Img"]</label>
+            <input type="file" asp-for="Img" class="form-control" />
+            <span asp-validation-for="Img" class="text-danger"></span>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary mt-1">@Localizer["Create"]</button>
+        </div>
     </div>
 </form>

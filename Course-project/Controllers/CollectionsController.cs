@@ -1,10 +1,11 @@
-﻿using Course_project.Models;
+﻿using Course_project.CloudStorage;
+using Course_project.Models;
 using Course_project.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 namespace Course_project.Controllers
@@ -15,11 +16,13 @@ namespace Course_project.Controllers
         private readonly UserManager<User> _userManager;
         private readonly ApplicationContext  _context;
         private readonly SignInManager<User> _signInManager;
-        public CollectionsController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationContext context)
+        private readonly ICloudStorage _cloudStorage;
+        public CollectionsController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationContext context, ICloudStorage cloudStorage)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _cloudStorage = cloudStorage;
         }
         [HttpGet]
         public ActionResult Index(Guid collectionId, SortState sortOrder = SortState.NameAscending)
@@ -82,7 +85,11 @@ namespace Course_project.Controllers
             if (ModelState.IsValid)
             {
                 User user = await _userManager.FindByIdAsync(userId);
-                Collection collection = new Collection { Name = model.Name, Theme = model.Theme, Summary = model.Summary, Owner = user.UserName, UserId= user.Id, CountItems=0 };
+                Collection collection = new Collection { Name = model.Name, Theme = model.Theme, Summary = model.Summary, Owner = user.UserName, UserId= user.Id, CountItems=0 , Img = model.Img };
+                if (model.Img != null)
+                {
+                    await UploadFile(collection);
+                }
                 _context.Collections.Add(collection);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Profile", new { userId });
@@ -111,5 +118,18 @@ namespace Course_project.Controllers
             return RedirectToAction("Index", "Profile", new { userId });
         }
 
+        private async Task UploadFile(Collection collection)
+        {
+            string fileNameForStorage = FormFileName(collection.Name, collection.Img.FileName);
+            collection.UrlImg = await _cloudStorage.UploadFileAsync(collection.Img, fileNameForStorage);
+            collection.ImageStorageName = fileNameForStorage;
+        }
+
+        private static string FormFileName(string title, string fileName)
+        {
+            var fileExtension = Path.GetExtension(fileName);
+            var fileNameForStorage = $"{title}-{DateTime.Now.ToString("yyyyMMddHHmmss")}{fileExtension}";
+            return fileNameForStorage;
+        }
     }
 }
