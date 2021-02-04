@@ -126,6 +126,9 @@
   <data name="Description" xml:space="preserve">
     <value>Описание</value>
   </data>
+  <data name="Image" xml:space="preserve">
+    <value>Изображение</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Имя</value>
   </data>
