@@ -11,9 +11,9 @@
     <table class="table table-striped table-hover">
         <tr>
             <th>@Localizer["Image"]</th>
-            <th>@Localizer["Name"]</th>
-            <th>@Localizer["Theme"]</th>
-            <th>@Localizer["NumberItems"]</th>
+            <th><a asp-controller="Profile" asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort" asp-route-userid="@ViewBag.User.Id">@Localizer["Name"]</a></th>
+            <th><a asp-controller="Profile" asp-action="Index" asp-route-sortOrder="@ViewBag.ThemeSort" asp-route-userid="@ViewBag.User.Id">@Localizer["Theme"]</a></th>
+            <th><a asp-controller="Profile" asp-action="Index" asp-route-sortOrder="@ViewBag.CountSort" asp-route-userid="@ViewBag.User.Id">@Localizer["NumberItems"]</a></th>
             <th>@Localizer["Summary"]</th>
             @if (User.IsInRole("admin") || User.Identity.Name.Equals(ViewBag.User.UserName))
             {
