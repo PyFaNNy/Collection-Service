@@ -1,31 +1,62 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
-<h2>@Localizer["Item"]:@Model.Name </h2>
 
-@if (Model.UrlImg != null)
-{
-    <img src="@Model.UrlImg" alt="Image" style="width: 150px; height: 220px;" />
-}
 
+<div>
+    <h4>@Localizer["Item"]:@Model.Name </h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            <label>@Localizer["Image"]  </label>
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model.UrlImg" alt="Image" style="width: 150px; height: 220px;" />
+        </dd>
+        <dt class="col-sm-2">
+            <label>@Localizer["Description"]</label>
+        </dt>
+        <dd class="col-sm-10">
+            <label>@Model.Description</label>
+        </dd>
+    </dl>
+</div>
 
 <span id="counts">@ViewBag.Likes</span>
 <button class="btn btn-primary m-1" id="likeBtn">@Localizer["Like"]</button>
-<input type="text" id="comment" />
-<button class="btn btn-primary m-1" id="commentBtn">@Localizer["Comment"]</button>
 
-<table class="table table-striped table-hover">
-    <tbody id="games">
-        @if (ViewBag.Comments != null)
-            @foreach (var comment in ViewBag.Comments)
-            {
-                <tr>
-                    <td>@comment.UserId</td>
-                    <td>@comment.messenge</td>
-                </tr>
-            }
-    </tbody>
-</table>
+<div class="container">
+    <div class="row bootstrap snippets bootdeys">
+        <div class="col-md-8 col-sm-12">
+            <div class="comment-wrapper">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        Comment panel
+                    </div>
+                    <div class="panel-body">
+                        <textarea class="form-control" placeholder="write a comment..." rows="3" id="comment"></textarea>
+                        <br>
+                        <button type="button" class="btn btn-info pull-right" id="commentBtn">@Localizer["Comment"]</button>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <ul class="media-list" id="comments">
+                            @if (ViewBag.Comments != null)
+                                @foreach (var comment in ViewBag.Comments)
+                                {
+                                    <li class="media">
+                                        <div class="media-body">
+                                            <strong class="text-success">@comment.UserId</strong>
+                                            <p>@comment.messenge</p>
+                                        </div>
+                                    </li>
+                                }
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
+        </div>
+    </div>
+</div>
 
 
 <script src="~/js/microsoft/signalr/dist/browser/signalr.min.js"></script>
@@ -34,22 +65,27 @@
         .withUrl("/Items")
         .build();
     hubConnection.on('getComment', function (data) {
-        var div = document.getElementById('games');
+        var div = document.getElementById('comments');
         while (div.firstChild) {
             div.removeChild(div.firstChild);
         }
         for (i = 0; i < data.length; i++) {
             var user = data[i].userId;
             var messenge = data[i].messenge;
-            var tbody = document.getElementById("games");
-            var row = document.createElement("TR")
-            var td1 = document.createElement("TD")
-            var td2 = document.createElement("TD")
-            td1.appendChild(document.createTextNode(user));
-            td2.append(messenge)
-            row.appendChild(td1);
-            row.appendChild(td2);
-            tbody.appendChild(row);
+            var ul = document.getElementById("comments");
+            var li = document.createElement("li")
+            var div = document.createElement("div")
+            var strong = document.createElement("strong")
+            var p = document.createElement("p")
+            strong.appendChild(document.createTextNode(user));
+            strong.setAttribute("class", "text-success")
+            p.append(messenge)
+            div.appendChild(strong);
+            div.appendChild(p);
+            div.setAttribute("class","media-body")
+            li.appendChild(div);
+            li.setAttribute("class", "media")
+            ul.appendChild(li);
         }
     });
 

@@ -36,9 +36,13 @@ namespace Course_project
         }
         public async Task Like(string itemId, string UserName)
         {
-            Like like = new Like { UserId = UserName, ItemId = itemId };
-            _context.Likes.Add(like);
-            await _context.SaveChangesAsync();
+            var checkedExistLike =_context.Likes.Where(p => p.ItemId == itemId && p.UserId==UserName).ToList().Count;
+            if (checkedExistLike == 0)
+            {
+                Like like = new Like { UserId = UserName, ItemId = itemId };
+                _context.Likes.Add(like);
+                await _context.SaveChangesAsync();
+            }
             var likes = _context.Likes.Where(p => p.ItemId==itemId).ToList().Count;
             await this.Clients.Group(itemId).SendAsync("getLike", likes);
         }
