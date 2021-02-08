@@ -13,10 +13,6 @@ namespace Course_project.ViewModels
         public string UserName { get; set; }
 
         [Required]
-        [Display(Name = "Login")]
-        public string Name { get; set; }
-
-        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
