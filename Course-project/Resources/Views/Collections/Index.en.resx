@@ -123,6 +123,9 @@
   <data name="BtnDeleteItem" xml:space="preserve">
     <value>Delete Item</value>
   </data>
+  <data name="BtnEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>

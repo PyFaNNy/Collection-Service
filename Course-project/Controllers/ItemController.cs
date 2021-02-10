@@ -22,6 +22,7 @@ namespace Course_project.Controllers
         public ActionResult Index(Guid ItemId)
         {
             Item item = _context.Items.Find(ItemId);
+
             var comments = _context.Comments.Where(p => p.ItemId==ItemId.ToString()).ToList();
             ViewBag.Comments = comments;
             ViewBag.Likes = _context.Likes.Where(p => p.ItemId == ItemId.ToString()).ToList().Count; ;
@@ -31,7 +32,7 @@ namespace Course_project.Controllers
         {
             ViewBag.Id = collectionId;
             return View();
-        }
+            }
 
         [HttpPost]
         public async Task<IActionResult> Create(ItemViewModel model, Guid collectionId)
@@ -51,6 +52,23 @@ namespace Course_project.Controllers
                 return RedirectToAction("Index", "Collections",new { collectionId });
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(Guid ItemId)
+        {
+            Item item = _context.Items.Find(ItemId);
+            ViewBag.Item = item;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(Item model, Guid itemId)
+        {
+            Item item = _context.Items.Find(itemId);
+            item.Name = model.Name;
+            item.Description = model.Description;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Item", new { itemId });
         }
 
         public async Task<IActionResult> Delete(Guid[] selectedItems)

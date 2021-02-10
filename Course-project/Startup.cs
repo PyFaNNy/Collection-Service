@@ -25,7 +25,7 @@ namespace Course_project
         {
 
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddSingleton<ICloudStorage, GoogleCloudStorage>();
             services.AddSignalR();

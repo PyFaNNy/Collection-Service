@@ -1,13 +1,13 @@
-﻿@model Course_project.ViewModels.CollectionViewModel
+﻿@model Course_project.Models.Collection
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 <h2>@Localizer["NewColl"]</h2>
-<form method="post" enctype="multipart/form-data"  asp-controller="Collections" asp-action="Create" asp-route-userid="@ViewBag.Id">
+<form method="post" enctype="multipart/form-data" asp-controller="Collections" asp-action="Edit" asp-route-collectionId="@ViewBag.Collection.Id">
     <div asp-validation-summary="ModelOnly"></div>
     <div class="col-md-4">
         <div class="form-group">
             <label asp-for="Name">@Localizer["Name"]</label><br />
-            <input asp-for="Name" class="form-control"/>
+            <input asp-for="Name" value="@ViewBag.Collection.Name" class="form-control" />
             <span asp-validation-for="Name"></span>
         </div>
         <div class="form-group">
@@ -22,14 +22,20 @@
         </div>
         <div class="form-group">
             <label asp-for="Summary">@Localizer["Summary"]</label><br />
-            <textarea class="form-control" rows="3" asp-for="Summary"></textarea>
-            <span asp-validation-for="Summary"></span>
+            <textarea class="form-control" rows="3" asp-for="Summary">@ViewBag.Collection.Summary</textarea>
         </div>
-        <div class="form-group">
-            <label asp-for="Img" class="control-label">@Localizer["Img"]</label>
-            <input type="file" asp-for="Img" class="form-control" />
-            <span asp-validation-for="Img" class="text-danger"></span>
-        </div>
+        @*<dl class="row">
+                <dt class="col-sm-">
+                    <div class="form-group">
+                        <label asp-for="Img" class="control-label">@Localizer["Img"]</label>
+                        <input type="file" asp-for="Img" class="form-control" value="@ViewBag.Collection.UrlImg" />
+                        <span asp-validation-for="Img" class="text-danger"></span>
+                    </div>
+                </dt>
+                <dd class="col-sm-10">
+                    <img src="@ViewBag.Collection.UrlImg" alt="Image" style="width: 150px; height: 220px;" />
+                </dd>
+            </dl>*@
         <div>
             <button type="submit" class="btn btn-primary mt-1">@Localizer["Create"]</button>
         </div>

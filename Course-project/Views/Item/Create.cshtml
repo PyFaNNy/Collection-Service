@@ -8,12 +8,12 @@
     <div class="col-md-4">
         <div class="form-group">
             <label asp-for="Name">@Localizer["Name"]</label><br />
-            <input asp-for="Name" />
+            <input asp-for="Name" class="form-control"/>
             <span asp-validation-for="Name"></span>
         </div>
         <div class="form-group">
             <label asp-for="Description">@Localizer["Description"]</label><br />
-            <input asp-for="Description" />
+            <textarea class="form-control" rows="3" asp-for="Description"></textarea>
             <span asp-validation-for="Description"></span>
         </div>
         <div class="form-group">

@@ -126,4 +126,7 @@
   <data name="Like" xml:space="preserve">
     <value>Лайк</value>
   </data>
+  <data name="ВtnEdit" xml:space="preserve">
+    <value>Редактировать</value>
+  </data>
 </root>

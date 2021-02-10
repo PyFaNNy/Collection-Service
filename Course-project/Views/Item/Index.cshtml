@@ -23,7 +23,10 @@
 
 <span id="counts">@ViewBag.Likes</span>
 <button class="btn btn-primary m-1" id="likeBtn">@Localizer["Like"]</button>
-
+@if (User.IsInRole("admin") || User.Identity.Name.Equals(ViewBag.Collection.Owner))
+{
+    <a class="btn btn-primary m-1" asp-controller="Item" asp-action="Edit" asp-route-ItemId="@Model.Id">@Localizer["ВtnEdit"]</a>
+}
 <div class="container">
     <div class="row bootstrap snippets bootdeys">
         <div class="col-md-8 col-sm-12">

@@ -14,7 +14,7 @@ namespace Course_project.Controllers
     public class CollectionsController : Controller
     {
         private readonly UserManager<User> _userManager;
-        private readonly ApplicationContext  _context;
+        private readonly ApplicationContext _context;
         private readonly SignInManager<User> _signInManager;
         private readonly ICloudStorage _cloudStorage;
         public CollectionsController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationContext context, ICloudStorage cloudStorage)
@@ -46,8 +46,8 @@ namespace Course_project.Controllers
         public ActionResult Collections(SortState sortOrder = SortState.NameAscending)
         {
             IQueryable<Collection> collections = _context.Collections;
-            ViewData["NameSort"] = sortOrder == SortState.NameAscending ?SortState.NameDescendingly : SortState.NameAscending;
-            ViewData["CountSort"] = sortOrder == SortState.CountAscending ?SortState.CountDescendingly : SortState.CountAscending;
+            ViewData["NameSort"] = sortOrder == SortState.NameAscending ? SortState.NameDescendingly : SortState.NameAscending;
+            ViewData["CountSort"] = sortOrder == SortState.CountAscending ? SortState.CountDescendingly : SortState.CountAscending;
             ViewData["ThemeSort"] = sortOrder == SortState.ThemeAscending ? SortState.ThemeDescendingly : SortState.ThemeAscending;
             switch (sortOrder)
             {
@@ -85,7 +85,7 @@ namespace Course_project.Controllers
             if (ModelState.IsValid)
             {
                 User user = await _userManager.FindByIdAsync(userId);
-                Collection collection = new Collection { Name = model.Name, Theme = model.Theme, Summary = model.Summary, Owner = user.UserName, UserId= user.Id, CountItems=0 , Img = model.Img };
+                Collection collection = new Collection { Name = model.Name, Theme = model.Theme, Summary = model.Summary, Owner = user.UserName, UserId = user.Id, CountItems = 0, Img = model.Img };
                 if (model.Img != null)
                 {
                     await UploadFile(collection);
@@ -109,7 +109,7 @@ namespace Course_project.Controllers
                     return NotFound();
                 }
                 _context.Collections.Remove(collection);
-                foreach(var item in items)
+                foreach (var item in items)
                 {
                     _context.Items.Remove(item);
                 }
@@ -118,6 +118,23 @@ namespace Course_project.Controllers
             return RedirectToAction("Index", "Profile", new { userId });
         }
 
+        [HttpGet]
+        public IActionResult Edit(Guid collectionId)
+        {
+            Collection collection = _context.Collections.Find(collectionId);
+            ViewBag.Collection = collection;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(Collection model, Guid collectionId)
+        {
+            Collection collection = _context.Collections.Find(collectionId);
+            collection.Name = model.Name;
+            collection.Theme = model.Theme;
+            collection.Summary = model.Summary;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Collections", new { collectionId });
+        }
         private async Task UploadFile(Collection collection)
         {
             string fileNameForStorage = FormFileName(collection.Name, collection.Img.FileName);
