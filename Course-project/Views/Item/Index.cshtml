@@ -45,13 +45,13 @@
                             @if (ViewBag.Comments != null)
                                 @foreach (var comment in ViewBag.Comments)
                                 {
-                            <li class="media">
-                                <img src="@comment.UrlImg" class="avatar" alt="">
-                                <div class="media-body">
-                                    <strong class="text-success">@comment.UserId</strong>
-                                    <p>@comment.messenge</p>
-                                </div>
-                            </li>
+                                    <li class="media">
+                                        <img src="@comment.UrlImg" class="avatar" alt="">
+                                        <div class="media-body">
+                                            <strong class="text-success">@comment.UserId</strong>
+                                            <p>@comment.messenge</p>
+                                        </div>
+                                    </li>
                                 }
                         </ul>
                     </div>
@@ -76,17 +76,22 @@
         for (i = 0; i < data.length; i++) {
             var user = data[i].userId;
             var messenge = data[i].messenge;
+            var src = data[i].urlImg;
             var ul = document.getElementById("comments");
             var li = document.createElement("li")
             var div = document.createElement("div")
+            var img = document.createElement("img")
             var strong = document.createElement("strong")
             var p = document.createElement("p")
             strong.appendChild(document.createTextNode(user));
-            strong.setAttribute("class", "text-success")
-            p.append(messenge)
+            strong.setAttribute("class", "text-success");
+            img.setAttribute("class", "avatar");
+            img.setAttribute("src", src);
+            p.append(messenge);
             div.appendChild(strong);
             div.appendChild(p);
-            div.setAttribute("class","media-body")
+            div.setAttribute("class", "media-body")
+            li.appendChild(img);
             li.appendChild(div);
             li.setAttribute("class", "media")
             ul.appendChild(li);
