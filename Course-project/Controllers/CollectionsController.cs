@@ -90,6 +90,11 @@ namespace Course_project.Controllers
                 {
                     await UploadFile(collection);
                 }
+                else
+                {
+                    collection.UrlImg = "/images/Collections/" + model.Theme+".jpg";
+                    collection.ImageStorageName = model.Theme;
+                }
                 _context.Collections.Add(collection);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Profile", new { userId });

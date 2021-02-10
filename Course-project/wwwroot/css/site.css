@@ -86,3 +86,14 @@ body {
     border-bottom: 1px dashed #efefef;
     margin-bottom: 25px;
 }
+
+.blog-comment img.avatar {
+    border-radius: 40px;
+    border:none;
+    position: relative;
+    float: left;
+    margin-left: 0;
+    margin-top: 0;
+    width: 65px;
+    height: 65px;
+}

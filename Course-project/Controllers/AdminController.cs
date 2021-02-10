@@ -49,7 +49,6 @@ namespace Course_project.Controllers
             }
             return View(users.AsNoTracking().ToList());
         }
-
         public async Task<IActionResult> Block(string[] selectedUsers)
         {
             foreach (var str in selectedUsers)
@@ -69,7 +68,6 @@ namespace Course_project.Controllers
 
             return RedirectToAction("Index");
         }
-
         public async Task<IActionResult> UnBlock(string[] selectedUsers)
         {
             foreach (var str in selectedUsers)
@@ -84,8 +82,6 @@ namespace Course_project.Controllers
             }
             return RedirectToAction("Index");
         }
-
-
         public async Task<IActionResult> Delete(string[] selectedUsers)
         {
             foreach (var str in selectedUsers)

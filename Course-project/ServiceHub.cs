@@ -1,7 +1,6 @@
 ﻿
 using Course_project.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Linq;
@@ -12,14 +11,17 @@ namespace Course_project
 {
     public class ServiceHub : Hub
     {
+        private readonly UserManager<User> _userManager;
         private readonly ApplicationContext _context;
-        public ServiceHub(ApplicationContext context)
+        public ServiceHub(ApplicationContext context, UserManager<User> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
         public async Task Comment(string message, string itemId, string UserName)
         {
-            Comment comment = new Comment {UserId = UserName, ItemId = itemId, messenge = message  };
+            User user = await _userManager.FindByNameAsync(UserName);
+            Comment comment = new Comment {UserId = UserName, ItemId = itemId, messenge = message, UrlImg=user.UrlImg  };
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
             var comments = _context.Comments.Where(p => p.ItemId.Equals(itemId)).ToList();

@@ -1,10 +1,11 @@
-﻿using Course_project.Models;
+﻿using Course_project.CloudStorage;
+using Course_project.Models;
 using Course_project.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
-using System.Collections.Generic;
+using System;
+using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -14,10 +15,12 @@ namespace Course_project.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly ICloudStorage _cloudStorage;
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,ICloudStorage cloudStorage)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _cloudStorage = cloudStorage;
         }
         [HttpGet]
         public IActionResult Register()
@@ -29,7 +32,21 @@ namespace Course_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User {Email = model.Email, UserName = model.UserName, Status="active"};
+                User user = new User 
+                {
+                    Email = model.Email,
+                    UserName = model.UserName,
+                    Status="active"
+                };
+                if (model.Img != null)
+                {
+                    await UploadFile(user);
+                }
+                else
+                {
+                    user.UrlImg= "/images/Icons/Default.png";
+                    user.ImageStorageName = "Default";
+                }
                 var result = await _userManager.CreateAsync(user, model.Password);
                 await _userManager.AddToRoleAsync(user, "user");
                 if (result.Succeeded)
@@ -57,7 +74,6 @@ namespace Course_project.Controllers
                 ExternalProviders = externalProviders
             });
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
@@ -96,7 +112,6 @@ namespace Course_project.Controllers
             }
             return View(model);
         }
-
         [AllowAnonymous]
         public IActionResult ExternalLogin(string provider, string returnUrl)
         {
@@ -130,7 +145,6 @@ namespace Course_project.Controllers
         {
             return View(model);
         }
-
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> RegisterExternalConfirmed(ExternalLoginViewModel model)
@@ -146,7 +160,6 @@ namespace Course_project.Controllers
                 Email = info.Principal.FindFirstValue(ClaimTypes.Email),
                 UserName = model.Name,
                 Status = "active",
-                Collections=null
             };
             var result = await _userManager.CreateAsync(user);
             await _userManager.AddToRoleAsync(user, "user");
@@ -169,14 +182,25 @@ namespace Course_project.Controllers
 
             return View(model);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            // удаляем аутентификационные куки
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        private async Task UploadFile(User user)
+        {
+            string fileNameForStorage = FormFileName(user.UserName, user.Img.FileName);
+            user.UrlImg = await _cloudStorage.UploadFileAsync(user.Img, fileNameForStorage);
+            user.ImageStorageName = fileNameForStorage;
+        }   
+        private static string FormFileName(string title, string fileName)
+        {
+            var fileExtension = Path.GetExtension(fileName);
+            var fileNameForStorage = $"{title}-{DateTime.Now.ToString("yyyyMMddHHmmss")}{fileExtension}";
+            return fileNameForStorage;
         }
     }
 }

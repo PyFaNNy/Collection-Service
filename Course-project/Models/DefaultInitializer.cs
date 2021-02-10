@@ -14,6 +14,8 @@ namespace Course_project.Models
             string password = "admin";
             string name = "admin";
             string status = "active";
+            string urlImg = "/images/Icons/Default.png";
+            string imageStorageName = "Default";
             if (await roleManager.FindByNameAsync("admin") == null)
             {
                 await roleManager.CreateAsync(new IdentityRole("admin"));
@@ -24,7 +26,7 @@ namespace Course_project.Models
             }
             if (await userManager.FindByNameAsync(adminEmail) == null)
             {
-                User admin = new User { Email = adminEmail, UserName = name, Status = status, Collections = null };
+                User admin = new User { Email = adminEmail, UserName = name, Status = status, UrlImg= urlImg, ImageStorageName= imageStorageName };
                 IdentityResult result = await userManager.CreateAsync(admin, password);
                 if (result.Succeeded)
                 {

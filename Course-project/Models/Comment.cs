@@ -11,5 +11,6 @@ namespace Course_project.Models
         public string UserId { get; set; }
         public string ItemId { get; set; }
         public string messenge { get; set; }
+        public string UrlImg { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace Course_project.ViewModels
         [Display(Name = "Summary")]
         public string Summary { get; set; }
 
-        [Required]
+
         [Display(Name = "Img")]
         [MaxFileSize(1 * 1024 * 1024)]
         [PermittedExtensions(new string[] { ".jpg", ".png", ".gif", ".jpeg" })]
