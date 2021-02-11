@@ -29,7 +29,7 @@
                     <td><a asp-controller="Collections" asp-action="Index" asp-route-collectionId="@collection.Id">@collection.Name</a></td>
                     <td>@Localizer[collection.Theme]</td>
                     <td>@collection.CountItems</td>
-                    <td>@collection.Owner</td>
+                    <td><a asp-controller="Profile" asp-action="Index" asp-route-name="@collection.Owner">@collection.Owner</a></td>
                     <td>@collection.Summary</td>
                     @if (User.IsInRole("admin"))
                     {

@@ -1,10 +1,8 @@
 ﻿using Course_project.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,20 +21,11 @@ namespace Course_project.Controllers
             _context = context;
         }
 
-        // GET: ProfileController
-        public async Task<ActionResult> Index(string userId, string name, SortState sortOrder = SortState.NameAscending)
+        [HttpGet]
+        public async Task<ActionResult> Index(string name, SortState sortOrder = SortState.NameAscending)
         {
-            User user = new User();
-            if (userId != null)
-            {
-                user = await _userManager.FindByIdAsync(userId);
-                ViewBag.User = user;
-            }
-            if (name!= null)
-            {
-                user = await _userManager.FindByNameAsync(name);
-                ViewBag.User = user;
-            }
+            User user = await _userManager.FindByNameAsync(name);
+            ViewBag.User = user;
             IQueryable<Collection> collections = _context.Collections.Where(p => p.UserId.Equals(user.Id));
             ViewData["NameSort"] = sortOrder == SortState.NameAscending ? SortState.NameDescendingly : SortState.NameAscending;
             ViewData["CountSort"] = sortOrder == SortState.CountAscending ? SortState.CountDescendingly : SortState.CountAscending;
@@ -64,6 +53,28 @@ namespace Course_project.Controllers
             }
             return View(collections.AsNoTracking().ToList());
         }
+        [HttpGet]
+        public async Task<ActionResult> Profile(string name)
+        {
+            User user = await _userManager.FindByNameAsync(name);
+            ViewBag.User = user;
+            return View();
+        }
 
+        [HttpPost]
+        public async Task<ActionResult> Edit(User model, string userId)
+        {
+            User user = await _userManager.FindByIdAsync(userId);
+            if(model.Email!=null)
+            user.Email = model.Email;
+            if (model.Email != null)
+                user.FirstName = model.FirstName;
+            if (model.Email != null)
+                user.LastName = model.LastName;
+            if (model.Email != null)
+                user.UserName = model.UserName;
+            await _userManager.UpdateAsync(user);
+            return RedirectToAction("Profile", "Profile", new { name=user.UserName });
+        }
     }
 }

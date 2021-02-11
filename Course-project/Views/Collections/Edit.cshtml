@@ -22,7 +22,7 @@
         </div>
         <div class="form-group">
             <label asp-for="Summary">@Localizer["Summary"]</label><br />
-            <textarea class="form-control" rows="3" asp-for="Summary">@ViewBag.Collection.Summary</textarea>
+            <textarea class="form-control" rows="3" asp-for="Summary">@ViewBag.Collection.Summary.ToString()</textarea>
         </div>
         @*<dl class="row">
                 <dt class="col-sm-">

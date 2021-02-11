@@ -7,6 +7,9 @@ namespace Course_project.Models
     public class User :IdentityUser
     {
         public string Status { get; set; }
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
+
         [NotMapped]
         public IFormFile Img { get; set; }
         public string ImageStorageName { get; set; }

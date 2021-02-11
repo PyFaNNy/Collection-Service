@@ -73,18 +73,18 @@ namespace Course_project.Controllers
             return View(collections.AsNoTracking().ToList());
         }
         [HttpGet]
-        public IActionResult Create(string userid)
+        public IActionResult Create(string username)
         {
-            ViewBag.Id = userid;
+            ViewBag.UserName = username;
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CollectionViewModel model, string userId)
+        public async Task<IActionResult> Create(CollectionViewModel model, string username)
         {
             if (ModelState.IsValid)
             {
-                User user = await _userManager.FindByIdAsync(userId);
+                User user = await _userManager.FindByNameAsync(username);
                 Collection collection = new Collection { Name = model.Name, Theme = model.Theme, Summary = model.Summary, Owner = user.UserName, UserId = user.Id, CountItems = 0, Img = model.Img };
                 if (model.Img != null)
                 {
@@ -97,14 +97,14 @@ namespace Course_project.Controllers
                 }
                 _context.Collections.Add(collection);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Profile", new { userId });
+                return RedirectToAction("Index", "Profile", new { name=username });
             }
             return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Delete(Guid[] selectedCollections)
         {
-            string userId = _context.Collections.Find(selectedCollections[0]).UserId;
+            string name = _context.Collections.Find(selectedCollections[0]).Owner;
             foreach (var id in selectedCollections)
             {
                 Collection collection = _context.Collections.Find(id);
@@ -120,7 +120,7 @@ namespace Course_project.Controllers
                 }
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Index", "Profile", new { userId });
+            return RedirectToAction("Index", "Profile", new { name });
         }
 
         [HttpGet]

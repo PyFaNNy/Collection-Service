@@ -5,7 +5,7 @@
 <form id='collections' method="post">
     @if (User.IsInRole("admin") || User.Identity.Name.Equals(ViewBag.User.UserName))
     {
-        <a class="btn btn-primary m-1" asp-controller="Collections" asp-action="Create" asp-route-userid="@ViewBag.User.Id">@Localizer["BtnCreateCollections"]</a>
+        <a class="btn btn-primary m-1" asp-controller="Collections" asp-action="Create" asp-route-username="@ViewBag.User.UserName">@Localizer["BtnCreateCollections"]</a>
         <button type="submit" class="btn btn-primary m-1" asp-controller="Collections" asp-action="Delete">@Localizer["BtnDeleteCollections"]</button>
     }
     <table class="table table-striped table-hover">

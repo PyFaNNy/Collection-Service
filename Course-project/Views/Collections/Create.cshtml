@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 <h2>@Localizer["NewColl"]</h2>
-<form method="post" enctype="multipart/form-data"  asp-controller="Collections" asp-action="Create" asp-route-userid="@ViewBag.Id">
+<form method="post" enctype="multipart/form-data"  asp-controller="Collections" asp-action="Create" asp-route-username="@ViewBag.UserName">
     <div asp-validation-summary="ModelOnly"></div>
     <div class="col-md-4">
         <div class="form-group">

@@ -21,7 +21,7 @@
         {
             <tr>
                 <td>@user.Email</td>
-                <td><a asp-controller="Profile" asp-action="Index" asp-route-userid="@user.Id">@user.UserName</a></td>
+                <td><a asp-controller="Profile" asp-action="Index" asp-route-name="@user.UserName">@user.UserName</a></td>
                 <td><a class="btn btn-sm btn-primary text-center" asp-controller="Roles" asp-action="Edit" asp-route-userid="@user.Id">@Localizer["Roles"]</a></td>
                 <td>@user.Status</td>
                 <td><input type="checkbox" class="user" name="selectedUsers" value="@user.UserName" /></td>
