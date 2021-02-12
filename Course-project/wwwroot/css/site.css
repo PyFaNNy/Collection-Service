@@ -88,12 +88,19 @@ body {
 }
 
 .blog-comment img.avatar {
-    border-radius: 40px;
-    border:none;
     position: relative;
     float: left;
     margin-left: 0;
     margin-top: 0;
     width: 65px;
     height: 65px;
+}
+
+.img.profile {
+    position: relative;
+    float: left;
+    margin-left: 5px;
+    margin-top: 5px;
+    width: 150px;
+    height: 150px;
 }

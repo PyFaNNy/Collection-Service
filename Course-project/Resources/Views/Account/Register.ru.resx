@@ -123,8 +123,14 @@
   <data name="Email" xml:space="preserve">
     <value>Электронная почта</value>
   </data>
-  <data name="Name" xml:space="preserve">
+  <data name="FirstName" xml:space="preserve">
     <value>Имя</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Фамилия</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Логин</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Пароль</value>

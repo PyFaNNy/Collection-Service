@@ -21,7 +21,7 @@ namespace Course_project
         public async Task Comment(string message, string itemId, string UserName)
         {
             User user = await _userManager.FindByNameAsync(UserName);
-            Comment comment = new Comment {UserId = UserName, ItemId = itemId, messenge = message, UrlImg=user.UrlImg  };
+            Comment comment = new Comment { UserName = UserName, ItemId = itemId, messenge = message, UrlImg=user.UrlImg  };
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
             var comments = _context.Comments.Where(p => p.ItemId.Equals(itemId)).ToList();
@@ -38,10 +38,10 @@ namespace Course_project
         }
         public async Task Like(string itemId, string UserName)
         {
-            var checkedExistLike =_context.Likes.Where(p => p.ItemId == itemId && p.UserId==UserName).ToList().Count;
+            var checkedExistLike =_context.Likes.Where(p => p.ItemId == itemId && p.UserName == UserName).ToList().Count;
             if (checkedExistLike == 0)
             {
-                Like like = new Like { UserId = UserName, ItemId = itemId };
+                Like like = new Like { UserName = UserName, ItemId = itemId };
                 _context.Likes.Add(like);
                 await _context.SaveChangesAsync();
             }

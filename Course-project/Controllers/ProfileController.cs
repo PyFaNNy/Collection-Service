@@ -25,7 +25,6 @@ namespace Course_project.Controllers
             _context = context;
             _cloudStorage = cloudStorage;
         }
-
         [HttpGet]
         public async Task<ActionResult> Index(string name, SortState sortOrder = SortState.NameAscending)
         {
@@ -65,7 +64,6 @@ namespace Course_project.Controllers
             ViewBag.User = user;
             return View();
         }
-
         [HttpPost]
         public async Task<ActionResult> Edit(User model, string userId)
         {
@@ -90,7 +88,7 @@ namespace Course_project.Controllers
                 user.Img = model.Img;
                 await UploadFile(user);
                 await _userManager.UpdateAsync(user);
-                var comments = _context.Comments.Where(p => p.UserId==user.UserName).ToList();
+                var comments = _context.Comments.Where(p => p.UserName == user.UserName).ToList();
                 foreach(var comment in comments)
                 {
                     comment.UrlImg = user.UrlImg;
@@ -100,7 +98,6 @@ namespace Course_project.Controllers
             
             return RedirectToAction("Profile", "Profile", new { name = user.UserName });
         }
-
         private async Task UploadFile(User user)
         {
             string fileNameForStorage = FormFileName(user.UserName, user.Img.FileName);

@@ -44,7 +44,9 @@ namespace Course_project.Controllers
                 }
                 else
                 {
-                    user.UrlImg= "/images/Icons/Default.png";
+                    Random rnd = new Random();
+                    int a = rnd.Next(0, 16);
+                    user.UrlImg= "/images/Icons/256x256/"+a.ToString()+".png";
                     user.ImageStorageName = "Default";
                 }
                 var result = await _userManager.CreateAsync(user, model.Password);

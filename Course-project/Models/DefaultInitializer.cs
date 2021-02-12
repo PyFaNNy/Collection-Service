@@ -14,7 +14,7 @@ namespace Course_project.Models
             string password = "admin";
             string name = "admin";
             string status = "active";
-            string urlImg = "/images/Icons/Default.png";
+            string urlImg = "/images/Icons/256x256/16.png";
             string imageStorageName = "Default";
             if (await roleManager.FindByNameAsync("admin") == null)
             {
