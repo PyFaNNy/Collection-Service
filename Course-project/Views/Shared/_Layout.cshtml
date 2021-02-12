@@ -27,7 +27,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" title="Manage" asp-controller="Profile" asp-action="Profile" asp-route-name="@User.Identity.Name">@User.Identity.Name</a>
+                                <a class="nav-link text-dark" title="Manage" asp-controller="Account" asp-action="Profile" asp-route-name="@User.Identity.Name">@User.Identity.Name</a>
                             </li>
                             <li class="nav-item">
                                 <form class="form-inline" asp-controller="Account" asp-action="Logout">
@@ -53,7 +53,7 @@
                         @if (User.IsInRole("admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">@Localizer["Admin"]</a>
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="AdminPanel">@Localizer["Admin"]</a>
                             </li>
                         }
                     </ul>

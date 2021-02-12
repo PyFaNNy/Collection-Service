@@ -4,8 +4,10 @@ using Course_project.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -15,12 +17,14 @@ namespace Course_project.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ApplicationContext _context;
         private readonly ICloudStorage _cloudStorage;
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,ICloudStorage cloudStorage)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,ICloudStorage cloudStorage, ApplicationContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _cloudStorage = cloudStorage;
+            _context = context;
         }
         [HttpGet]
         public IActionResult Register()
@@ -192,6 +196,137 @@ namespace Course_project.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
+        public async Task<ActionResult> Profile(string name)
+        {
+            User user = await _userManager.FindByNameAsync(name);
+            ViewBag.User = user;
+            return View();
+        }
+        [HttpPost]
+        public async Task<ActionResult> Edit(User model, string userId)
+        {
+            User user = await _userManager.FindByIdAsync(userId);
+            if (model.Email != null)
+                user.Email = model.Email;
+            if (model.Email != null)
+                user.FirstName = model.FirstName;
+            if (model.Email != null)
+                user.LastName = model.LastName;
+            if (model.Email != null)
+                user.UserName = model.UserName;
+            await _userManager.UpdateAsync(user);
+            return RedirectToAction("Profile", "Profile", new { name = user.UserName });
+        }
+        [HttpPost]
+        public async Task<ActionResult> ChangePhoto(User model, string userId)
+        {
+            User user = await _userManager.FindByIdAsync(userId);
+            if (model.Img != null)
+            {
+                user.Img = model.Img;
+                await UploadFile(user);
+                await _userManager.UpdateAsync(user);
+                var comments = _context.Comments.Where(p => p.UserName == user.UserName).ToList();
+                foreach (var comment in comments)
+                {
+                    comment.UrlImg = user.UrlImg;
+                }
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Profile", "Profile", new { name = user.UserName });
+        }
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        public async Task<IActionResult> Block(string[] selectedUsers)
+        {
+            foreach (var str in selectedUsers)
+            {
+                User user = await _userManager.FindByNameAsync(str);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                user.Status = "blocked";
+                await _userManager.UpdateAsync(user);
+                if (user.Status.Equals("blocked") && User.Identity.Name.Equals(user.UserName))
+                {
+                    await _signInManager.SignOutAsync();
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        public async Task<IActionResult> UnBlock(string[] selectedUsers)
+        {
+            foreach (var str in selectedUsers)
+            {
+                User user = await _userManager.FindByNameAsync(str);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                user.Status = "active";
+                await _userManager.UpdateAsync(user);
+            }
+            return RedirectToAction("Index");
+        }
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        public async Task<IActionResult> Delete(string[] selectedUsers)
+        {
+            foreach (var str in selectedUsers)
+            {
+                User user = await _userManager.FindByNameAsync(str);
+                if (user != null)
+                {
+                    if (User.Identity.Name.Equals(user.UserName))
+                    {
+                        await _signInManager.SignOutAsync();
+                    }
+                    IdentityResult result = await _userManager.DeleteAsync(user);
+                }
+            }
+            if (_userManager.FindByNameAsync(User.Identity.Name).Status.Equals("blocked"))
+            {
+                return Redirect("~/Account/Logout");
+            }
+            return RedirectToAction("Index");
+        }
+        [Authorize(Roles = "admin")]
+        [HttpGet]
+        public IActionResult AdminPanel(SortState sortOrder = SortState.NameAscending)
+        {
+            IQueryable<User> users = _context.Users;
+            ViewData["NameSort"] = sortOrder == SortState.NameAscending ? SortState.NameDescendingly : SortState.NameAscending;
+            ViewData["EmailSort"] = sortOrder == SortState.EmailAscending ? SortState.EmailDescendingly : SortState.EmailAscending;
+            ViewData["StatusSort"] = sortOrder == SortState.StatusAscending ? SortState.StatusDescendingly : SortState.StatusAscending;
+            switch (sortOrder)
+            {
+                case SortState.NameAscending:
+                    users = users.OrderBy(s => s.UserName);
+                    break;
+                case SortState.NameDescendingly:
+                    users = users.OrderByDescending(s => s.UserName);
+                    break;
+                case SortState.EmailDescendingly:
+                    users = users.OrderByDescending(s => s.Email);
+                    break;
+                case SortState.StatusAscending:
+                    users = users.OrderBy(s => s.Status);
+                    break;
+                case SortState.StatusDescendingly:
+                    users = users.OrderByDescending(s => s.Status);
+                    break;
+                default:
+                    users = users.OrderBy(s => s.Email);
+                    break;
+            }
+            return View(users.AsNoTracking().ToList());
+        }
         private async Task UploadFile(User user)
         {
             string fileNameForStorage = FormFileName(user.UserName, user.Img.FileName);

@@ -36,6 +36,7 @@
             <h3>@Localizer["LoginExternalProvider"]</h3>
             <hr />
             <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
+                @if(Model.ExternalProviders!=null)
                 @foreach (var provider in Model.ExternalProviders)
                 {
                     <button type="submit" name="provider" class="btn btn-primary mt-1" value="@provider.Name">@provider.DisplayName</button>

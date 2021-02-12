@@ -25,7 +25,7 @@
                             <p>
                                 Indie music, skiing and hiking. I love the great outdoors.
                             </p>
-                            <a asp-controller="Profile" asp-action="Index" asp-route-sortOrder="@ViewBag.ThemeSort" asp-route-name="@ViewBag.User.UserName">@Localizer["Collections"]</a>
+                            <a asp-controller="Collections" asp-action="ProfileCollections" asp-route-sortOrder="@ViewBag.ThemeSort" asp-route-name="@ViewBag.User.UserName">@Localizer["Collections"]</a>
                         </div>
                         <div class="col-md-12">
                             <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span>@Localizer["RecentActivity"]</h5>
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="tab-pane" id="edit">
-                    <form method="post" asp-controller="Profile" asp-action="Edit" asp-route-userId="@ViewBag.User.Id">
+                    <form method="post" asp-controller="Account" asp-action="Edit" asp-route-userId="@ViewBag.User.Id">
                         <div class="form-group row">
                             <label asp-for="FirstName" class="col-lg-3 col-form-label form-control-label">@Localizer["FirstName"]</label>
                             <div class="col-lg-9">
@@ -92,7 +92,7 @@
             @if (User.Identity.Name.Equals(ViewBag.User.UserName))
             {
                 <h6 class="mt-2">@Localizer["UploadPhoto"]</h6>
-                <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="ChangePhoto" asp-route-userId="@ViewBag.User.Id">
+                <form method="post" enctype="multipart/form-data" asp-controller="Account" asp-action="ChangePhoto" asp-route-userId="@ViewBag.User.Id">
                     <label class="custom-file">
                         <input type="file" asp-for="Img" class="">
                         <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
