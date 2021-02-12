@@ -1,8 +1,11 @@
-﻿using Course_project.Models;
+﻿using Course_project.CloudStorage;
+using Course_project.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,11 +17,13 @@ namespace Course_project.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ApplicationContext _context;
-        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationContext context)
+        private readonly ICloudStorage _cloudStorage;
+        public ProfileController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationContext context, ICloudStorage cloudStorage)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _cloudStorage = cloudStorage;
         }
 
         [HttpGet]
@@ -75,6 +80,38 @@ namespace Course_project.Controllers
                 user.UserName = model.UserName;
             await _userManager.UpdateAsync(user);
             return RedirectToAction("Profile", "Profile", new { name=user.UserName });
+        }
+        [HttpPost]
+        public async Task<ActionResult> ChangePhoto(User model, string userId)
+        {
+            User user = await _userManager.FindByIdAsync(userId);
+            if (model.Img != null)
+            {
+                user.Img = model.Img;
+                await UploadFile(user);
+                await _userManager.UpdateAsync(user);
+                var comments = _context.Comments.Where(p => p.UserId==user.UserName).ToList();
+                foreach(var comment in comments)
+                {
+                    comment.UrlImg = user.UrlImg;
+                }
+                await _context.SaveChangesAsync();
+            }
+            
+            return RedirectToAction("Profile", "Profile", new { name = user.UserName });
+        }
+
+        private async Task UploadFile(User user)
+        {
+            string fileNameForStorage = FormFileName(user.UserName, user.Img.FileName);
+            user.UrlImg = await _cloudStorage.UploadFileAsync(user.Img, fileNameForStorage);
+            user.ImageStorageName = fileNameForStorage;
+        }
+        private static string FormFileName(string title, string fileName)
+        {
+            var fileExtension = Path.GetExtension(fileName);
+            var fileNameForStorage = $"{title}-{DateTime.Now.ToString("yyyyMMddHHmmss")}{fileExtension}";
+            return fileNameForStorage;
         }
     }
 }

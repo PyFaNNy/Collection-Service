@@ -90,10 +90,11 @@
         <div class="col-lg-4 order-lg-1 text-center">
             <img src="@ViewBag.User.UrlImg" class="mx-auto img-fluid img-circle d-block" alt="avatar">
             <h6 class="mt-2">@Localizer["UploadPhoto"]</h6>
-            <form method="post" asp-controller="Profile" asp-action="Edit" asp-route-userId="@ViewBag.User.Id">
+            <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="ChangePhoto" asp-route-userId="@ViewBag.User.Id">
                 <label class="custom-file">
-                    <input type="file" asp-for="Img" class="custom-file-input">
+                    <input type="file" asp-for="Img" class="">
                     <span class="custom-file-control">@Localizer["ChooseFile"]</span>
+                    <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
                 </label>
             </form>
         </div>
