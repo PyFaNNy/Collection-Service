@@ -116,6 +116,7 @@ namespace Course_project.Controllers
                     }
                 }
             }
+            model.ExternalProviders = await _signInManager.GetExternalAuthenticationSchemesAsync();
             return View(model);
         }
         [AllowAnonymous]

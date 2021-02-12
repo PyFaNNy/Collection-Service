@@ -5,14 +5,14 @@
 }
 <h2>@Localizer["ListOfUsers"]</h2>
 <form id='users' method="post">
-    <button type="submit" class="btn btn-primary m-1" asp-controller="Admin" asp-action="Delete">@Localizer["BtnDelete"]</button>
-    <button type="submit" class="btn btn-primary m-1" asp-controller="Admin" asp-action="Block">@Localizer["BtnBlock"]</button>
-    <button type="submit" class="btn btn-primary m-1" asp-controller="Admin" asp-action="UnBlock">@Localizer["BtnUnBlock"]</button>
+    <button type="submit" class="btn btn-primary m-1" asp-controller="Account" asp-action="Delete">@Localizer["BtnDelete"]</button>
+    <button type="submit" class="btn btn-primary m-1" asp-controller="Account" asp-action="Block">@Localizer["BtnBlock"]</button>
+    <button type="submit" class="btn btn-primary m-1" asp-controller="Account" asp-action="UnBlock">@Localizer["BtnUnBlock"]</button>
 
     <table class="table table-striped table-hover">
         <tr>
-            <th><a asp-controller="Admin" asp-action="Index" asp-route-sortOrder="@ViewBag.EmailSort">@Localizer["Email"]</a></th>
-            <th><a asp-controller="Admin" asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">@Localizer["Name"]</a></th>
+            <th><a asp-controller="Account" asp-action="AdminPanel" asp-route-sortOrder="@ViewBag.EmailSort">@Localizer["Email"]</a></th>
+            <th><a asp-controller="Account" asp-action="AdminPanel" asp-route-sortOrder="@ViewBag.NameSort">@Localizer["Name"]</a></th>
             <th>@Localizer["Roles"]</th>
             <th><a asp-controller="Admin" asp-action="Index" asp-route-sortOrder="@ViewBag.StatusSort">@Localizer["Status"]</a></th>
             <th><input type="checkbox" name="cb_all"></th>
