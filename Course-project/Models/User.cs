@@ -9,6 +9,8 @@ namespace Course_project.Models
         public string Status { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
+        public string About { get; set; }
+        public string Hobbies { get; set; }
 
         [NotMapped]
         public IFormFile Img { get; set; }
