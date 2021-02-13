@@ -97,7 +97,7 @@ namespace Course_project.Controllers
                 }
                 _context.Collections.Add(collection);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Profile", new { name=username });
+                return RedirectToAction("ProfileCollections", "Collections", new { name=username });
             }
             return View(model);
         }
@@ -120,7 +120,7 @@ namespace Course_project.Controllers
                 }
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Index", "Profile", new { name });
+            return RedirectToAction("ProfileCollections", "Collections", new { name });
         }
 
         [HttpGet]

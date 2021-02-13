@@ -208,21 +208,26 @@ namespace Course_project.Controllers
         public async Task<ActionResult> Edit(User model, string userId)
         {
             User user = await _userManager.FindByIdAsync(userId);
+            var name = user.UserName;
             if (model.Email != null)
                 user.Email = model.Email;
             if (model.Email != null)
                 user.FirstName = model.FirstName;
             if (model.Email != null)
                 user.LastName = model.LastName;
-            if (model.Email != null)
-                user.UserName = model.UserName;
+            if (model.About != null)
+                user.About = model.About;
+            if (model.Hobbies != null)
+                user.Hobbies = model.Hobbies;
             await _userManager.UpdateAsync(user);
-            return RedirectToAction("Profile", "Profile", new { name = user.UserName });
+            
+            return RedirectToAction("Profile", "Account", new { name });
         }
         [HttpPost]
         public async Task<ActionResult> ChangePhoto(User model, string userId)
         {
             User user = await _userManager.FindByIdAsync(userId);
+            var name = user.UserName;
             if (model.Img != null)
             {
                 user.Img = model.Img;
@@ -236,7 +241,7 @@ namespace Course_project.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction("Profile", "Profile", new { name = user.UserName });
+            return RedirectToAction("Profile", "Profile", new { name });
         }
         [Authorize(Roles = "admin")]
         [HttpPost]
@@ -257,7 +262,7 @@ namespace Course_project.Controllers
                 }
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("AdminPanel");
         }
         [Authorize(Roles = "admin")]
         [HttpPost]
@@ -273,7 +278,7 @@ namespace Course_project.Controllers
                 user.Status = "active";
                 await _userManager.UpdateAsync(user);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("AdminPanel");
         }
         [Authorize(Roles = "admin")]
         [HttpPost]
@@ -295,7 +300,7 @@ namespace Course_project.Controllers
             {
                 return Redirect("~/Account/Logout");
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("AdminPanel");
         }
         [Authorize(Roles = "admin")]
         [HttpGet]

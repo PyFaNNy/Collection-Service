@@ -23,13 +23,5 @@ namespace Course_project.Controllers
 
             return LocalRedirect(returnUrl);
         }
-
-        public IActionResult SetTheme(string data, string returnUrl)
-        {
-            CookieOptions cookies = new CookieOptions();
-            Response.Cookies.Append("theme", data, cookies);
-
-            return LocalRedirect(returnUrl);
-        }
     }
 }

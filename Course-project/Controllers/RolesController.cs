@@ -94,7 +94,7 @@ namespace Course_project.Controllers
 
                 await _userManager.RemoveFromRolesAsync(user, removedRoles);
 
-                return RedirectToAction("Index", "Admin");
+                return RedirectToAction("AdminPanel", "Account");
             }
 
             return NotFound();
