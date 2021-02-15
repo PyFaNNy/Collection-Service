@@ -20,11 +20,12 @@ namespace Course_project.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
+        [HttpGet]
         public IActionResult Index()
         {
             return View(_roleManager.Roles.ToList());
         }
-
+        [HttpGet]
         public IActionResult Create() => View();
         [HttpPost]
         public async Task<IActionResult> Create(string name)
@@ -46,7 +47,6 @@ namespace Course_project.Controllers
             }
             return View(name);
         }
-
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
@@ -57,9 +57,9 @@ namespace Course_project.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        [HttpGet]
         public IActionResult UserList() => View(_userManager.Users.ToList());
-
+        [HttpGet]
         public async Task<IActionResult> Edit(string userId)
         {
             User user = await _userManager.FindByIdAsync(userId);

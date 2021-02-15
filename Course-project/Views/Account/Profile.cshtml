@@ -33,6 +33,14 @@
                             <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span>@Localizer["RecentActivity"]</h5>
                             <table class="table table-sm table-hover table-striped">
                                 <tbody>
+                                    @if (ViewBag.Active!=null) 
+                                    @foreach (var active in ViewBag.Active)
+                                    {
+                                    <tr>
+                                        <td>@active.Messenge</td>
+                                        <td>@active.Time</td>
+                                    </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -70,12 +78,6 @@
                                 <input asp-for="Hobbies" class="form-control" type="text" value="@ViewBag.User.Hobbies">
                             </div>
                         </div>
-                        @*<div class="form-group row">
-                                <label asp-for="UserName" class="col-lg-3 col-form-label form-control-label">@Localizer["UserName"]</label>
-                                <div class="col-lg-9">
-                                    <input asp-for="UserName" class="form-control" type="text" value="@ViewBag.User.UserName">
-                                </div>
-                            </div>*@
                         @*<div class="form-group row">
                                 <label asp-for="Password" class="col-lg-3 col-form-label form-control-label">@Localizer["Password"]</label>
                                 <div class="col-lg-9">

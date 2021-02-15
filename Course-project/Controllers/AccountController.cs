@@ -201,7 +201,9 @@ namespace Course_project.Controllers
         public async Task<ActionResult> Profile(string name)
         {
             User user = await _userManager.FindByNameAsync(name);
+            var activities = _context.RecentActivities.Where(p => p.UserName.Equals(name)).OrderByDescending(p=>p.Time).ToList();
             ViewBag.User = user;
+            ViewBag.Active = activities;
             return View();
         }
         [HttpPost]

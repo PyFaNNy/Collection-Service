@@ -17,6 +17,9 @@ namespace Course_project.Controllers
         private readonly ApplicationContext _context;
         private readonly SignInManager<User> _signInManager;
         private readonly ICloudStorage _cloudStorage;
+        private string CREATECOl = "Create Collection";
+        private string DELETECOL = "Delete Collection";
+        private string EDITCOL = "Edit Collection";
         public CollectionsController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationContext context, ICloudStorage cloudStorage)
         {
             _userManager = userManager;
@@ -78,7 +81,6 @@ namespace Course_project.Controllers
             ViewBag.UserName = username;
             return View();
         }
-
         [HttpPost]
         public async Task<IActionResult> Create(CollectionViewModel model, string username)
         {
@@ -92,12 +94,13 @@ namespace Course_project.Controllers
                 }
                 else
                 {
-                    collection.UrlImg = "/images/Collections/" + model.Theme+".jpg";
+                    collection.UrlImg = "/images/Collections/" + model.Theme + ".jpg";
                     collection.ImageStorageName = model.Theme;
                 }
+                CreateActivity(CREATECOl, collection.Owner);
                 _context.Collections.Add(collection);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("ProfileCollections", "Collections", new { name=username });
+                return RedirectToAction("ProfileCollections", "Collections", new { name = username });
             }
             return View(model);
         }
@@ -109,6 +112,7 @@ namespace Course_project.Controllers
             {
                 Collection collection = _context.Collections.Find(id);
                 var items = _context.Items.Where(p => p.CollectionId == id.ToString()).ToList();
+                CreateActivity(DELETECOL, collection.Owner);
                 if (collection == null)
                 {
                     return NotFound();
@@ -122,7 +126,6 @@ namespace Course_project.Controllers
             }
             return RedirectToAction("ProfileCollections", "Collections", new { name });
         }
-
         [HttpGet]
         public IActionResult Edit(Guid collectionId)
         {
@@ -137,6 +140,7 @@ namespace Course_project.Controllers
             collection.Name = model.Name;
             collection.Theme = model.Theme;
             collection.Summary = model.Summary;
+            CreateActivity(EDITCOL, collection.Owner);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Collections", new { collectionId });
         }
@@ -178,12 +182,26 @@ namespace Course_project.Controllers
             collection.UrlImg = await _cloudStorage.UploadFileAsync(collection.Img, fileNameForStorage);
             collection.ImageStorageName = fileNameForStorage;
         }
-
         private static string FormFileName(string title, string fileName)
         {
             var fileExtension = Path.GetExtension(fileName);
             var fileNameForStorage = $"{title}-{DateTime.Now.ToString("yyyyMMddHHmmss")}{fileExtension}";
             return fileNameForStorage;
+        }
+        private void CreateActivity(string messenge, string userName)
+        {
+            var activityes = _context.RecentActivities.Where(x => x.UserName == userName).OrderByDescending(t => t.Time).ToArray();
+            if (activityes.Length < 5)
+            {
+                RecentActivity activity = new RecentActivity { Messenge = messenge, UserName = userName, Time = DateTime.Now };
+                _context.RecentActivities.Add(activity);
+            }
+            else
+            {
+                activityes[4].Messenge = messenge;
+                activityes[4].Time = DateTime.Now;
+            }
+            _context.SaveChanges();
         }
     }
 }

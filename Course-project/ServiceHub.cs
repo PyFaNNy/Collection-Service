@@ -13,6 +13,8 @@ namespace Course_project
     {
         private readonly UserManager<User> _userManager;
         private readonly ApplicationContext _context;
+        private string LIKE = "Like Item";
+        private string COMMENT = "Comment Item";
         public ServiceHub(ApplicationContext context, UserManager<User> userManager)
         {
             _userManager = userManager;
@@ -22,6 +24,7 @@ namespace Course_project
         {
             User user = await _userManager.FindByNameAsync(UserName);
             Comment comment = new Comment { UserName = UserName, ItemId = itemId, messenge = message, UrlImg=user.UrlImg  };
+            CreateActivity(COMMENT, UserName);
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
             var comments = _context.Comments.Where(p => p.ItemId.Equals(itemId)).ToList();
@@ -42,6 +45,7 @@ namespace Course_project
             if (checkedExistLike == 0)
             {
                 Like like = new Like { UserName = UserName, ItemId = itemId };
+                CreateActivity(LIKE, UserName);
                 _context.Likes.Add(like);
                 await _context.SaveChangesAsync();
             }
@@ -57,6 +61,21 @@ namespace Course_project
         {
             await this.Clients.Caller.SendAsync("DelConnected");
             await base.OnDisconnectedAsync(exception);
+        }
+        private void CreateActivity(string messenge, string userName)
+        {
+            var activityes = _context.RecentActivities.Where(x => x.UserName == userName).OrderByDescending(t => t.Time).ToArray();
+            if (activityes.Length < 5)
+            {
+                RecentActivity activity = new RecentActivity { Messenge = messenge, UserName = userName, Time = DateTime.Now };
+                _context.RecentActivities.Add(activity);
+            }
+            else
+            {
+                activityes[4].Messenge = messenge;
+                activityes[4].Time = DateTime.Now;
+            }
+            _context.SaveChanges();
         }
     }
 }
