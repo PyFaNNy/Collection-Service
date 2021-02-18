@@ -29,8 +29,11 @@ namespace Course_project
         }
         public async Task GetUser(string userName)
         {
-            User user = await _userManager.FindByNameAsync(userName);
-            Users.Add(user);
+            if (!Users.Any(x => x.UserName == userName))
+            {
+                User user = await _userManager.FindByNameAsync(userName);
+                Users.Add(user);
+            }
             await Clients.All.SendAsync("getUsers", Users);
         }
         public async Task DelUser(string userName)
@@ -47,7 +50,7 @@ namespace Course_project
         }
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            await this.Clients.Caller.SendAsync("DelConnected");
+            await this.Clients.Caller.SendAsync("getDisConnected");
             await base.OnDisconnectedAsync(exception);
         }
 
