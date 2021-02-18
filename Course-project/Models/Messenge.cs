@@ -2,12 +2,12 @@
 
 namespace Course_project.Models
 {
-    public class Comment
+    public class Messenge
     {
         public Guid Id { get; set; }
-        public string UserName { get; set; }
-        public string ItemId { get; set; }
+        public string Sender { get; set; }
         public string messenge { get; set; }
         public string UrlImg { get; set; }
+        public DateTime Time { get; set; }
     }
 }

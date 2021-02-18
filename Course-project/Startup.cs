@@ -94,7 +94,8 @@ namespace Course_project
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapHub<ServiceHub>("/Items");
+                endpoints.MapHub<ServiceHub>("/Service");
+                endpoints.MapHub<ChatHub>("/Chat");
             });
         }
     }

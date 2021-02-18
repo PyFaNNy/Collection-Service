@@ -33,7 +33,7 @@
             <div class="comment-wrapper">
                 <div class="panel panel-info">
                     <div class="panel-body">
-                        <textarea class="form-control" placeholder="write a comment..." rows="3" id="comment"></textarea>
+                        <textarea class="form-control" placeholder="@Localizer["WriteComment"]" rows="3" id="comment"></textarea>
                         <br>
                         <button type="button" class="btn btn-info pull-right" id="commentBtn">@Localizer["Comment"]</button>
                         <div class="clearfix"></div>
@@ -63,7 +63,7 @@
 <script src="~/js/microsoft/signalr/dist/browser/signalr.min.js"></script>
 <script>
     const hubConnection = new signalR.HubConnectionBuilder()
-        .withUrl("/Items")
+        .withUrl("/Service")
         .build();
     hubConnection.on('getComment', function (data) {
         var div = document.getElementById('comments');

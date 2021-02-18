@@ -30,14 +30,13 @@ namespace Course_project
             var comments = _context.Comments.Where(p => p.ItemId.Equals(itemId)).ToList();
             await this.Clients.Group(itemId).SendAsync("getComment", comments);
         }
-
-        public async Task GetGroup(string itemId)
+        public async Task GetGroup(string groupId)
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, itemId);
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupId);
         }
-        public async Task DelGroup(string itemId)
+        public async Task DelGroup(string groupId)
         {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, itemId);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupId);
         }
         public async Task Like(string itemId, string UserName)
         {
