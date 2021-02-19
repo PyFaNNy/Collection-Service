@@ -4,7 +4,7 @@ using System;
 
 namespace Course_project.Models
 {
-    public class ApplicationContext : IdentityDbContext<User>
+    public class ApplicationContext : IdentityDbContext<AppUser>
     {
         public DbSet<Collection> Collections { get; set; }
         public DbSet<Item> Items { get; set; }

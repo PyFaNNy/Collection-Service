@@ -5,7 +5,7 @@ namespace Course_project.Models
 {
     public class DefaultInitializer
     {
-        public static async Task InitializeAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task InitializeAsync(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             string adminEmail = "admin@gmail.com";
             string password = "admin";
@@ -23,7 +23,7 @@ namespace Course_project.Models
             }
             if (await userManager.FindByNameAsync(adminEmail) == null)
             {
-                User admin = new User { Email = adminEmail, UserName = name, Status = status, UrlImg= urlImg, ImageStorageName= imageStorageName };
+                AppUser admin = new AppUser { Email = adminEmail, UserName = name, Status = status, UrlImg= urlImg, ImageStorageName= imageStorageName };
                 IdentityResult result = await userManager.CreateAsync(admin, password);
                 if (result.Succeeded)
                 {

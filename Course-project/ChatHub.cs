@@ -5,22 +5,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace Course_project
 {
     public class ChatHub : Hub
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<AppUser> _userManager;
         private readonly ApplicationContext _context;
-        static List<User> Users = new List<User>();
-        public ChatHub(ApplicationContext context, UserManager<User> userManager)
+        static List<AppUser> Users = new List<AppUser>();
+        public ChatHub(ApplicationContext context, UserManager<AppUser> userManager)
         {
             _userManager = userManager;
             _context = context;
         }
         public async Task Messenge(string message, string UserName)
         {
-            User user = await _userManager.FindByNameAsync(UserName);
+            AppUser user = await _userManager.FindByNameAsync(UserName);
             Messenge messenge = new Messenge { Sender = UserName, Time = DateTime.Now, messenge = message, UrlImg = user.UrlImg };
             _context.Messenges.Add(messenge);
             await _context.SaveChangesAsync();
@@ -31,14 +32,14 @@ namespace Course_project
         {
             if (!Users.Any(x => x.UserName == userName))
             {
-                User user = await _userManager.FindByNameAsync(userName);
+                AppUser user = await _userManager.FindByNameAsync(userName);
                 Users.Add(user);
             }
             await Clients.All.SendAsync("getUsers", Users);
         }
         public async Task DelUser(string userName)
         {
-            User user = await _userManager.FindByNameAsync(userName);
+            AppUser user = await _userManager.FindByNameAsync(userName);
             Users.Remove(user);
             await Clients.All.SendAsync("getUsers", Users);
         }
@@ -48,8 +49,11 @@ namespace Course_project
             await this.Clients.Caller.SendAsync("getConnected");
             await base.OnConnectedAsync();
         }
-        public override async Task OnDisconnectedAsync(Exception exception)
+        public override async Task OnDisconnectedAsync(Exception exception) 
         {
+            AppUser user = Users.FirstOrDefault(x => x.UserName == Context.User.Identity.Name);
+            Users.Remove(user);
+            await Clients.All.SendAsync("getUsers", Users);
             await this.Clients.Caller.SendAsync("getDisConnected");
             await base.OnDisconnectedAsync(exception);
         }

@@ -20,7 +20,7 @@ namespace Course_project
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var userManager = services.GetRequiredService<UserManager<User>>();
+                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
                     var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     await DefaultInitializer.InitializeAsync(userManager, rolesManager);
                 }
