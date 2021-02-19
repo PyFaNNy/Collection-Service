@@ -135,10 +135,6 @@
             let name = "@User.Identity.Name";
             hubConnection.invoke("GetUser", name);
         });
-        hubConnection.on('getDisConnected', function (data) {
-            let name = "@User.Identity.Name";
-            hubConnection.invoke("DelUser", name);
-        });
         document.getElementById("messengeBtn").addEventListener("click", function (e) {
             let messenge = document.getElementById("messenge").value;
             let name="@User.Identity.Name";

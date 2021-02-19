@@ -37,13 +37,6 @@ namespace Course_project
             }
             await Clients.All.SendAsync("getUsers", Users);
         }
-        public async Task DelUser(string userName)
-        {
-            AppUser user = await _userManager.FindByNameAsync(userName);
-            Users.Remove(user);
-            await Clients.All.SendAsync("getUsers", Users);
-        }
-
         public override async Task OnConnectedAsync()
         {
             await this.Clients.Caller.SendAsync("getConnected");
@@ -54,7 +47,6 @@ namespace Course_project
             AppUser user = Users.FirstOrDefault(x => x.UserName == Context.User.Identity.Name);
             Users.Remove(user);
             await Clients.All.SendAsync("getUsers", Users);
-            await this.Clients.Caller.SendAsync("getDisConnected");
             await base.OnDisconnectedAsync(exception);
         }
 
