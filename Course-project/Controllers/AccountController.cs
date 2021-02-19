@@ -15,11 +15,11 @@ namespace Course_project.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly ApplicationContext _context;
         private readonly ICloudStorage _cloudStorage;
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,ICloudStorage cloudStorage, ApplicationContext context)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,ICloudStorage cloudStorage, ApplicationContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -36,7 +36,7 @@ namespace Course_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                AppUser user = new AppUser 
+                User user = new User 
                 {
                     Email = model.Email,
                     UserName = model.UserName,
@@ -162,7 +162,7 @@ namespace Course_project.Controllers
                 return RedirectToAction("Login");
             }
 
-            AppUser user = new AppUser
+            User user = new User
             {
                 Email = info.Principal.FindFirstValue(ClaimTypes.Email),
                 UserName = model.Name,
@@ -200,16 +200,16 @@ namespace Course_project.Controllers
         [HttpGet]
         public async Task<ActionResult> Profile(string name)
         {
-            AppUser user = await _userManager.FindByNameAsync(name);
+            User user = await _userManager.FindByNameAsync(name);
             var activities = _context.RecentActivities.Where(p => p.UserName.Equals(name)).OrderByDescending(p=>p.Time).ToList();
             ViewBag.User = user;
             ViewBag.Active = activities;
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> Edit(AppUser model, string userId)
+        public async Task<ActionResult> Edit(User model, string userId)
         {
-            AppUser user = await _userManager.FindByIdAsync(userId);
+            User user = await _userManager.FindByIdAsync(userId);
             var name = user.UserName;
             if (model.Email != null)
                 user.Email = model.Email;
@@ -226,9 +226,9 @@ namespace Course_project.Controllers
             return RedirectToAction("Profile", "Account", new { name });
         }
         [HttpPost]
-        public async Task<ActionResult> ChangePhoto(AppUser model, string userId)
+        public async Task<ActionResult> ChangePhoto(User model, string userId)
         {
-            AppUser user = await _userManager.FindByIdAsync(userId);
+            User user = await _userManager.FindByIdAsync(userId);
             var name = user.UserName;
             if (model.Img != null)
             {
@@ -251,7 +251,7 @@ namespace Course_project.Controllers
         {
             foreach (var str in selectedUsers)
             {
-                AppUser user = await _userManager.FindByNameAsync(str);
+                User user = await _userManager.FindByNameAsync(str);
                 if (user == null)
                 {
                     return NotFound();
@@ -272,7 +272,7 @@ namespace Course_project.Controllers
         {
             foreach (var str in selectedUsers)
             {
-                AppUser user = await _userManager.FindByNameAsync(str);
+                User user = await _userManager.FindByNameAsync(str);
                 if (user == null)
                 {
                     return NotFound();
@@ -288,7 +288,7 @@ namespace Course_project.Controllers
         {
             foreach (var str in selectedUsers)
             {
-                AppUser user = await _userManager.FindByNameAsync(str);
+                User user = await _userManager.FindByNameAsync(str);
                 if (user != null)
                 {
                     if (User.Identity.Name.Equals(user.UserName))
@@ -308,7 +308,7 @@ namespace Course_project.Controllers
         [HttpGet]
         public IActionResult AdminPanel(SortState sortOrder = SortState.NameAscending)
         {
-            IQueryable<AppUser> users = _context.Users;
+            IQueryable<User> users = _context.Users;
             ViewData["NameSort"] = sortOrder == SortState.NameAscending ? SortState.NameDescendingly : SortState.NameAscending;
             ViewData["EmailSort"] = sortOrder == SortState.EmailAscending ? SortState.EmailDescendingly : SortState.EmailAscending;
             ViewData["StatusSort"] = sortOrder == SortState.StatusAscending ? SortState.StatusDescendingly : SortState.StatusAscending;
@@ -335,7 +335,7 @@ namespace Course_project.Controllers
             }
             return View(users.AsNoTracking().ToList());
         }
-        private async Task UploadFile(AppUser user)
+        private async Task UploadFile(User user)
         {
             string fileNameForStorage = FormFileName(user.UserName, user.Img.FileName);
             user.UrlImg = await _cloudStorage.UploadFileAsync(user.Img, fileNameForStorage);

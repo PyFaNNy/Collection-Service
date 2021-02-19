@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Course_project.Models
 {
-    public class AppUser :IdentityUser
+    public class User :IdentityUser
     {
         public string Status { get; set; }
         public string LastName { get; set; }

@@ -11,18 +11,18 @@ namespace Course_project
 {
     public class ServiceHub : Hub
     {
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly ApplicationContext _context;
         private string LIKE = "Like Item";
         private string COMMENT = "Comment Item";
-        public ServiceHub(ApplicationContext context, UserManager<AppUser> userManager)
+        public ServiceHub(ApplicationContext context, UserManager<User> userManager)
         {
             _userManager = userManager;
             _context = context;
         }
         public async Task Comment(string message, string itemId, string UserName)
         {
-            AppUser user = await _userManager.FindByNameAsync(UserName);
+            User user = await _userManager.FindByNameAsync(UserName);
             Comment comment = new Comment { UserName = UserName, ItemId = itemId, messenge = message, UrlImg=user.UrlImg  };
             CreateActivity(COMMENT, UserName);
             _context.Comments.Add(comment);

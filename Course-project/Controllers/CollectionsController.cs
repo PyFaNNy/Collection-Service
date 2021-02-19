@@ -13,14 +13,14 @@ namespace Course_project.Controllers
     [Route("[controller]/[action]")]
     public class CollectionsController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly ApplicationContext _context;
-        private readonly SignInManager<AppUser> _signInManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly ICloudStorage _cloudStorage;
         private string CREATECOl = "Create Collection";
         private string DELETECOL = "Delete Collection";
         private string EDITCOL = "Edit Collection";
-        public CollectionsController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ApplicationContext context, ICloudStorage cloudStorage)
+        public CollectionsController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationContext context, ICloudStorage cloudStorage)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -86,7 +86,7 @@ namespace Course_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                AppUser user = await _userManager.FindByNameAsync(username);
+                User user = await _userManager.FindByNameAsync(username);
                 Collection collection = new Collection { Name = model.Name, Theme = model.Theme, Summary = model.Summary, Owner = user.UserName, UserId = user.Id, CountItems = 0, Img = model.Img };
                 if (model.Img != null)
                 {
@@ -147,7 +147,7 @@ namespace Course_project.Controllers
         [HttpGet]
         public async Task<ActionResult> ProfileCollections(string name, SortState sortOrder = SortState.NameAscending)
         {
-            AppUser user = await _userManager.FindByNameAsync(name);
+            User user = await _userManager.FindByNameAsync(name);
             ViewBag.User = user;
             IQueryable<Collection> collections = _context.Collections.Where(p => p.UserId.Equals(user.Id));
             ViewData["NameSort"] = sortOrder == SortState.NameAscending ? SortState.NameDescendingly : SortState.NameAscending;

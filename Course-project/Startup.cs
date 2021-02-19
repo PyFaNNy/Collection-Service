@@ -41,7 +41,7 @@ namespace Course_project
                     options.AppSecret = Configuration["Authentication:Facebook:AppSecret"]; ;
                 });
             services.AddLocalization(options => options.ResourcesPath = "Resources");
-            services.AddIdentity<AppUser, IdentityRole>(options =>
+            services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 1;
                 options.Password.RequireNonAlphanumeric = false;
