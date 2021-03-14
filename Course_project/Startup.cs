@@ -96,6 +96,7 @@ namespace Course_project
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapHub<ServiceHub>("/Service");
                 endpoints.MapHub<ChatHub>("/Chat");
+                endpoints.MapHub<TicTacHub>("/Game");
             });
         }
     }
