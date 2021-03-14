@@ -1,0 +1,48 @@
+﻿@model Course_project.ViewModels.LoginViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<div class="row">
+    <div class="col-md-4">
+        <section>
+            <form method="post" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl" >
+                <h3>@Localizer["LoginApp"]</h3>
+                <hr />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name">@Localizer["Name"]</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password">@Localizer["Password"]</label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label asp-for="RememberMe">@Localizer["RememberMe"]</label>
+                        <input asp-for="RememberMe" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary mt-1">@Localizer["BtnLogin"]</button>
+                </div>
+            </form>
+        </section>
+    </div>
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            <h3>@Localizer["LoginExternalProvider"]</h3>
+            <hr />
+            <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
+                @if(Model.ExternalProviders!=null)
+                @foreach (var provider in Model.ExternalProviders)
+                {
+                    <button type="submit" name="provider" class="btn btn-primary mt-1" value="@provider.Name">@provider.DisplayName</button>
+
+                }
+            </form>
+        </section>
+    </div>
+</div>

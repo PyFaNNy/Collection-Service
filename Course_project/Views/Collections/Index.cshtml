@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+<h2>@Localizer["User"] @ViewBag.Collection.Owner</h2>
+<h4>@Localizer["NameCollection"]: @ViewBag.Collection.Name </h4>
+<form id='items' method="post">
+    @if (User.IsInRole("admin") || User.Identity.Name.Equals(ViewBag.Collection.Owner))
+    {
+        <a class="btn btn-primary m-1" asp-controller="Item" asp-action="Create" asp-route-collectionId="@ViewBag.Collection.Id">@Localizer["BtnCreateItem"]</a>
+        <a class="btn btn-primary m-1" asp-controller="Collections" asp-action="Edit" asp-route-collectionId="@ViewBag.Collection.Id">@Localizer["BtnEdit"]</a>
+        <button type="submit" class="btn btn-primary m-1" asp-controller="Item" asp-action="Delete">@Localizer["BtnDeleteItem"]</button>
+    }
+    <table class="table table-striped table-hover">
+        <tr>
+            <th>@Localizer["Image"]</th>
+            <th><a asp-controller="Collections" asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort" asp-route-collectionId="@ViewBag.Collection.Id">@Localizer["Name"]</a></th>
+            <th>@Localizer["Description"]</th>
+            @if (User.IsInRole("admin") || User.Identity.Name.Equals(ViewBag.Collection.Owner))
+            {
+                <th><input type="checkbox" name="cb_all"></th>
+            }
+        </tr>
+        @if (Model != null)
+            @foreach (var items in Model)
+            {
+                <tr>
+                    <td><img src="@items.UrlImg" alt="Image" style="width: 150px; height: 220px;" /></td>
+                    <td><a asp-controller="Item" asp-action="Index" asp-route-ItemId="@items.Id">@items.Name</a></td>
+                    <td>@items.Description</td>
+                    @if (User.IsInRole("admin") || User.Identity.Name.Equals(ViewBag.Collection.Owner))
+                    {
+                        <td><input type="checkbox" class="qwe" name="selectedItems" value="@items.Id" /></td>
+                    }
+                </tr>
+            }
+    </table>
+</form>
+
+<script>
+    var f = document.getElementById('items');
+    f.cb_all.onchange = function (e) {
+        var el = e.target || e.srcElement;
+        var qwe = el.form.getElementsByClassName('qwe');
+        for (var i = 0; i < qwe.length; i++) {
+            if (el.checked) {
+                qwe[i].checked = true;
+            } else {
+                qwe[i].checked = false;
+            }
+        }
+    }
+</script>
