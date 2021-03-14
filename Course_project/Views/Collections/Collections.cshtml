@@ -40,17 +40,4 @@
     </table>
 </form>
 
-<script>
-    var f = document.getElementById('collections');
-    f.cb_all.onchange = function (e) {
-        var el = e.target || e.srcElement;
-        var qwe = el.form.getElementsByClassName('collection');
-        for (var i = 0; i < qwe.length; i++) {
-            if (el.checked) {
-                qwe[i].checked = true;
-            } else {
-                qwe[i].checked = false;
-            }
-        }
-    }
-</script>
+<script src="~/js/View/Collections/Collections.js"></script>
