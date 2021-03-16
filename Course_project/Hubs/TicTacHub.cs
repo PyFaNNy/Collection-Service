@@ -68,43 +68,45 @@ namespace Course_project
         public void MakeAMove(int position, string Email)
         {
             TicTacGame game = games.First(games => games.Player1.Email.Equals(Email) || games.Player2.Email.Equals(Email));
-
-            int symbol = 0;
-
-            if (game.Player2.Email.Equals(Email))
+           if (game.Player2 != null)
             {
-                symbol = 1;
-            }
+                int symbol = 0;
 
-            var player = symbol == 0 ? game.Player1 : game.Player2;
-            player.ConnectionId = Context.ConnectionId;
-            if (player.WaitingForMove)
-            {
-                return;
-            }
+                if (game.Player2.Email.Equals(Email))
+                {
+                    symbol = 1;
+                }
 
-            if (game.Play(symbol, position))
-            {
-                Clients.Client(game.Player1.ConnectionId).SendAsync("GameOver", $"The winner is {player.Email}");
-                Clients.Client(game.Player2.ConnectionId).SendAsync("GameOver", $"The winner is {player.Email}");
+                var player = symbol == 0 ? game.Player1 : game.Player2;
+                player.ConnectionId = Context.ConnectionId;
+                if (player.WaitingForMove)
+                {
+                    return;
+                }
+
+                if (game.Play(symbol, position))
+                {
+                    Clients.Client(game.Player1.ConnectionId).SendAsync("GameOver", $"The winner is {player.Email}");
+                    Clients.Client(game.Player2.ConnectionId).SendAsync("GameOver", $"The winner is {player.Email}");
+                    Clients.Client(game.Player1.ConnectionId).SendAsync("moveMade", game.field);
+                    Clients.Client(game.Player2.ConnectionId).SendAsync("moveMade", game.field);
+                    Thread.Sleep(5000);
+                    this.Clients.Client(player.ConnectionId).SendAsync("RedirectHome");
+                    this.Clients.Client(player.Opponent.ConnectionId).SendAsync("RedirectHome");
+                    games.TryTake(out game);
+                }
                 Clients.Client(game.Player1.ConnectionId).SendAsync("moveMade", game.field);
                 Clients.Client(game.Player2.ConnectionId).SendAsync("moveMade", game.field);
-                Thread.Sleep(5000);
-                this.Clients.Client(player.ConnectionId).SendAsync("RedirectHome");
-                this.Clients.Client(player.Opponent.ConnectionId).SendAsync("RedirectHome");
-                games.TryTake(out game);
-            }
-            Clients.Client(game.Player1.ConnectionId).SendAsync("moveMade", game.field);
-            Clients.Client(game.Player2.ConnectionId).SendAsync("moveMade", game.field);
 
 
-            if (!game.IsOver)
-            {
-                player.WaitingForMove = !player.WaitingForMove;
-                player.Opponent.WaitingForMove = !player.Opponent.WaitingForMove;
+                if (!game.IsOver)
+                {
+                    player.WaitingForMove = !player.WaitingForMove;
+                    player.Opponent.WaitingForMove = !player.Opponent.WaitingForMove;
 
-                Clients.Client(player.Opponent.ConnectionId).SendAsync("WaitingForOpponent", player.Opponent.Email);
-                Clients.Client(player.ConnectionId).SendAsync("WaitingForOpponent", player.Opponent.Email);
+                    Clients.Client(player.Opponent.ConnectionId).SendAsync("waitingForOpponent");
+                    Clients.Client(player.ConnectionId).SendAsync("waitingForOpponent");
+                }
             }
         }
         public override async Task OnConnectedAsync()
@@ -115,8 +117,17 @@ namespace Course_project
         public async Task GetCardGame(string Email)
         {
             TicTacGame game = games.First(games => games.Player1.Email.Equals(Email) || games.Player2.Email.Equals(Email));
-
+            if (game.Player2.Email != null && game.Player2.Email.Equals(Email))
+            {
+                game.Player2.ConnectionId = Context.ConnectionId;
+                await Clients.Client(game.Player2.ConnectionId).SendAsync("waitingForOpponent");
+            }
             await Clients.Caller.SendAsync("moveMade", game.field);
+        }
+        public async Task GetListGame()
+        {
+            if (games.ToArray().Length!=0)
+            await Clients.Caller.SendAsync("GetGames", games.ToArray());
         }
     }
 }

@@ -70,7 +70,6 @@ hubConnection.on('getConnected', function (data) {
     hubConnection.invoke("GetListGame");
 });
 document.getElementById("btnRegister").addEventListener("click", function (e) {
-    let email = '@User.Identity.Name';
     let name = document.getElementById("TagReg").value;
     hubConnection.invoke("RegisterGame", name, email);
 });
@@ -80,7 +79,7 @@ document.getElementById("btnFind").addEventListener("click", function (e) {
 });
 
 function connect(button) {
-    hubConnection.invoke("ConnectGame", button.value + " @User.Identity.Name");
+    hubConnection.invoke("ConnectGame", button.value + " "+email);
 }
 
 hubConnection.start();
